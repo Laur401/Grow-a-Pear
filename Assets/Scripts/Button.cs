@@ -47,9 +47,9 @@ public class Button : MonoBehaviour
             {
                 IActivator activator = obj.GetComponent<IActivator>();
                 if (activator != null&&state)
-                    activator.Active = true;
+                    activator.Active = true; 
                 if (activator != null&&!state)
-                    activator.Active = false;
+                    activator.Active = false; //TODO: Only change state if ALL buttons are unpressed
             }
     }
 }
