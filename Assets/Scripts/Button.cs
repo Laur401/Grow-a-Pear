@@ -8,12 +8,14 @@ public class Button : MonoBehaviour
 {
     [SerializeField] private Sprite unpressedSprite;
     [SerializeField] private Sprite pressedSprite;
-    [SerializeField] GameObject[] affectedObjects;
+
     private SpriteRenderer spriteRenderer;
+    private ButtonActivator buttonActivator;
     private int itemCount = 0;
     
     void Start()
     {
+        buttonActivator = GetComponentInParent<ButtonActivator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = unpressedSprite;
     }
@@ -24,7 +26,7 @@ public class Button : MonoBehaviour
         {
             itemCount++;
             spriteRenderer.sprite = pressedSprite;
-            ObjectStateChanger(true);
+            buttonActivator.ButtonTracker(true);
         }
     }
 
@@ -36,20 +38,8 @@ public class Button : MonoBehaviour
             if (itemCount == 0)
             {
                 spriteRenderer.sprite = unpressedSprite;
-                ObjectStateChanger(false);
+                buttonActivator.ButtonTracker(false);
             }
         }
-    }
-
-    void ObjectStateChanger(bool state)
-    {
-            foreach (GameObject obj in affectedObjects)
-            {
-                IActivator activator = obj.GetComponent<IActivator>();
-                if (activator != null&&state)
-                    activator.Active = true; 
-                if (activator != null&&!state)
-                    activator.Active = false; //TODO: Only change state if ALL buttons are unpressed
-            }
     }
 }

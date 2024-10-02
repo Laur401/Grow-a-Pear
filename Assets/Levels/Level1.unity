@@ -359,7 +359,7 @@ Transform:
   m_GameObject: {fileID: 329356869}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.19, y: 8.03, z: 0}
+  m_LocalPosition: {x: 1.28, y: 7.96, z: 0}
   m_LocalScale: {x: 0.7451746, y: 0.7451746, z: 0.7451746}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -488,6 +488,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5905787491235720836, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
   m_PrefabInstance: {fileID: 460748659}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &489405944 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1397449263405229502, guid: 5199d28434a34b75a9da82fae8334738, type: 3}
+  m_PrefabInstance: {fileID: 1930486768}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &500705318 stripped
 Transform:
@@ -8522,6 +8527,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 951184637}
+  - component: {fileID: 951184638}
   m_Layer: 0
   m_Name: BlueButton
   m_TagString: Untagged
@@ -8550,6 +8556,24 @@ Transform:
   - {fileID: 336998762}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &951184638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951184636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f58e522d3889a6ce88642931acd5a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons: []
+  affectedObjects:
+  - {fileID: 1217409668}
+  - {fileID: 1749254904}
+  - {fileID: 1484862249}
+  - {fileID: 856355030}
 --- !u!1001 &982262265
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8946,6 +8970,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1728051052}
+  - component: {fileID: 1728051053}
   m_Layer: 0
   m_Name: RedButton
   m_TagString: Untagged
@@ -8970,6 +8995,27 @@ Transform:
   - {fileID: 1930486769}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1728051053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728051051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f58e522d3889a6ce88642931acd5a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 489405944}
+  affectedObjects:
+  - {fileID: 439485608}
+--- !u!1 &1728285911 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1397449263405229502, guid: 5199d28434a34b75a9da82fae8334738, type: 3}
+  m_PrefabInstance: {fileID: 1863124481}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1749254904 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4251364593062926814, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
@@ -9333,6 +9379,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2024973271001334206, guid: 5199d28434a34b75a9da82fae8334738, type: 3}
   m_PrefabInstance: {fileID: 1930486768}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1935931781 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1397449263405229502, guid: 5199d28434a34b75a9da82fae8334738, type: 3}
+  m_PrefabInstance: {fileID: 220918430}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2007408878
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9567,6 +9618,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2090464629}
+  - component: {fileID: 2090464630}
   m_Layer: 0
   m_Name: GreenButton
   m_TagString: Untagged
@@ -9594,6 +9646,25 @@ Transform:
   - {fileID: 500705318}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2090464630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2090464628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f58e522d3889a6ce88642931acd5a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 1728285911}
+  - {fileID: 1935931781}
+  affectedObjects:
+  - {fileID: 1614878150}
+  - {fileID: 626401597}
+  - {fileID: 2051878615}
 --- !u!1001 &485355772661711194
 PrefabInstance:
   m_ObjectHideFlags: 0
