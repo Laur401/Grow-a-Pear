@@ -9,6 +9,7 @@ TagManager:
   - Spike
   - Camera1
   - Box
+  - Locked
   layers:
   - Default
   - TransparentFX
