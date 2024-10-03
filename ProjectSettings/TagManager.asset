@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Camera2
+  - Ground
+  - Spike
+  - Camera1
+  - Box
+  - Locked
   layers:
   - Default
   - TransparentFX
@@ -11,7 +17,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Environment
   - 
   - 
   - 
@@ -38,6 +44,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 32571389
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Cover
+    uniqueID: 3445420497
     locked: 0
