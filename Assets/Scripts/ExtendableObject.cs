@@ -9,7 +9,7 @@ public class ExtendableObject : MonoBehaviour, IActivator
     //[SerializeField] GameObject spriteMaskGameObject;
     
     private Vector3 initialPosition;
-    private BoxCollider2D objectCollider;
+    //private BoxCollider2D objectCollider;
     private SpriteMask spriteMask;
     private bool active=false;
     public bool Active
@@ -21,7 +21,7 @@ public class ExtendableObject : MonoBehaviour, IActivator
     void Start()
     {
         initialPosition=transform.position;
-        objectCollider=GetComponent<BoxCollider2D>();
+        //objectCollider=GetComponent<BoxCollider2D>();
         //spriteMask=spriteMaskGameObject.GetComponent<SpriteMask>();
     }
     
