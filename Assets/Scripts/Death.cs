@@ -13,7 +13,8 @@ public class Death : MonoBehaviour
     private void Start()
     {
         players=GameObject.FindGameObjectsWithTag("Player");
-        respawnPoints.Add(players[0].transform.position);
+        if (players!=null)
+            respawnPoints.Add(players[0].transform.position);
     }
 
     private void Update()
