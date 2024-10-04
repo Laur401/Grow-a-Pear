@@ -1,0 +1,11 @@
+Bigger player should move slower and jump lower
+Smaller player should move faster and jump higher
+
+Balance level design
+
+Artwork of players doesn't match the environment (replace environment)
+Create animations for the characters (and maybe the environment)
+Fix jumping collision, detection on slopes and moving objects
+Fix 'cheesing' possibilities - jumping off walls, clipping between gates
+
+Positives - good core mechanic, great player artwork

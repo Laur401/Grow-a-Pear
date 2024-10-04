@@ -1,6 +1,9 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
+//TODO: Change input keys to not hardcoded ones
+//TODO: Merge movement scripts into one
+//TODO: Change growth/shrink into one float and treat it as N and 1/N respectively
 public class PlayerMovement1 : MonoBehaviour
 {
     [SerializeField] private float speed;
@@ -12,14 +15,16 @@ public class PlayerMovement1 : MonoBehaviour
     [SerializeField] private float throwForce;
 
     private Rigidbody2D body;
-    private Animator anim;
+    //private Animator anim;
     private bool grounded;
+    private bool canThrowPlayer1 = true;
+    private bool canThrowPlayer2 = true;
 
     private void Awake()
     {
         // Grab references for Rigidbody and Animator from the object
         body = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -52,56 +57,66 @@ public class PlayerMovement1 : MonoBehaviour
 
         // Scaling logic
         if (Input.GetKeyDown(KeyCode.Z))
-            Grow();
+            Grow(Player1, Player2);
         if (Input.GetKeyDown(KeyCode.X))
-            Shrink();
+            Shrink(Player1, Player2);
 
         // Set animator parameters
-        anim.SetBool("run", horizontalInput != 0);
-        anim.SetBool("grounded", grounded);
+        //anim.SetBool("run", horizontalInput != 0);
+        //anim.SetBool("grounded", grounded);
+        
+        HandleThrowing();
     }
 
     private void Jump()
     {
         float adjustedJumpForce = jumpForce * transform.localScale.y; // Adjust jump force based on scale
         body.velocity = new Vector2(body.velocity.x, adjustedJumpForce);
-        anim.SetTrigger("jump");
+        //anim.SetTrigger("jump");
         grounded = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground")||collision.gameObject.CompareTag("Player")||collision.gameObject.CompareTag("Box"))
         {
             grounded = true;
-            anim.SetBool("grounded", true);
+            //anim.SetBool("grounded", true);
         }
+
+        canThrowPlayer1 = true;
+        canThrowPlayer2 = true;
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground")||collision.gameObject.CompareTag("Player")||collision.gameObject.CompareTag("Box"))
         {
             grounded = false;
-            anim.SetBool("grounded", false);  // Update animator when leaving the ground
+            //anim.SetBool("grounded", false);  // Update animator when leaving the ground
         }
     }
 
-    private void Grow()
+    private void Grow(GameObject player, GameObject otherPlayer)
     {
         Vector3 newScale = new Vector3(transform.localScale.x * growFactor, transform.localScale.y * growFactor, 1);
-        if (newScale.y <= 3.0f) // Set a max scale limit
+        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * shrinkFactor, otherPlayer.transform.localScale.y * shrinkFactor, 1);
+
+        if (newScale.y <= 2.4f && otherNewScale.y >= 0.1f) // Set a max scale limit
         {
-            transform.localScale = newScale; // Adjust scaling
+            player.transform.localScale = newScale; // Adjust scaling
+            otherPlayer.transform.localScale = otherNewScale;
         }
     }
 
-    private void Shrink()
+    private void Shrink(GameObject player, GameObject otherPlayer)
     {
         Vector3 newScale = new Vector3(transform.localScale.x * shrinkFactor, transform.localScale.y * shrinkFactor, 1);
-        if (newScale.y >= 0.5f) // Set a min scale limit
+        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * growFactor, otherPlayer.transform.localScale.y * growFactor, 1);
+        if (newScale.y >= 0.1f && otherNewScale.y <= 2.4f) // Set a min scale limit
         {
-            transform.localScale = newScale; // Return to normal size
+            player.transform.localScale = newScale; // Return to normal size
+            otherPlayer.transform.localScale = otherNewScale;
         }
     }
 
@@ -123,12 +138,14 @@ public class PlayerMovement1 : MonoBehaviour
             {
                 Debug.Log("Player 1 throwing Player 2");
                 Throw(Player1, Player2);
+                canThrowPlayer1 = false;
             }
 
             if (Input.GetKey(KeyCode.Slash) && Player2Scale > Player1Scale && grounded)
             {
                 Debug.Log("Player 2 throwing Player 1");
                 Throw(Player2, Player1);
+                canThrowPlayer2 = false;
             }
         }
     }

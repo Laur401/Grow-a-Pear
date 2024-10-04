@@ -1,32 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-    GameObject playerObj;
+    Rigidbody2D rb;
+    [SerializeField] private float followDistance = 1.0f;
+    GameObject player;
+    bool pickedUp;
+    bool wasKinematic;
     // Start is called before the first frame update
     void Start()
     {
-        playerObj=GameObject.FindWithTag("Player");
+        rb=GetComponent<Rigidbody2D>();
+        pickedUp = false;
+        wasKinematic = rb.isKinematic;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Q))
-            PickObjUp();
-        if (Input.GetKey(KeyCode.E))
+        if (pickedUp)
+        {
+            transform.position=player.transform.position+player.transform.right*followDistance; //TODO: Have the item "in front" of the player (aka the direction where the player is turned to)
+            transform.rotation=player.transform.rotation;
+            // TODO: Scale the object to the size of the player.
+        }
+        
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player")&&Input.GetKeyDown(KeyCode.Q)&&pickedUp==false)
+            PickObjUp(other.gameObject);
+        else if (Input.GetKeyDown(KeyCode.Q)&&pickedUp==true) //TODO: Fix player not being able to put the item down if trigger is just out of reach
             UnPickObjUp();
     }
-    void PickObjUp()
+
+    void PickObjUp(GameObject playerObject)
     {
-        transform.SetParent(playerObj.transform);
-        transform.localPosition=new Vector2(1.5f,-1.0f);
+        pickedUp = true;
+        player=playerObject;
+        rb.isKinematic=true;
+        //TODO: Disable collision if picked up
+        //rb.freezeRotation = true;
     }
     void UnPickObjUp()
     {
+        pickedUp = false;
+        //rb.freezeRotation = false;
         transform.parent=null;
+        rb.isKinematic=false;
+        player = null;
     }
 }
 

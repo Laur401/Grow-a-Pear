@@ -22,7 +22,7 @@ public class Button : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Box"))
+        if (other.isTrigger==false)
         {
             itemCount++;
             spriteRenderer.sprite = pressedSprite;
@@ -32,7 +32,7 @@ public class Button : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Box"))
+        if (other.isTrigger==false)
         {
             itemCount--;
             if (itemCount == 0)

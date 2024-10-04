@@ -10,7 +10,7 @@ public class ColliderDisabler : MonoBehaviour
 
     private Collider2D objectCollider;
     
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         Physics2D.IgnoreCollision(objectToDisable, other);
     }
