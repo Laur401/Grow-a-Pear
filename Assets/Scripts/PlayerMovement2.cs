@@ -97,7 +97,7 @@ public class PlayerMovement2 : MonoBehaviour
     {
         // Only change the y scale, maintain the x scale
         Vector3 newScale = new Vector3(transform.localScale.x * growFactor, transform.localScale.y * growFactor, 1);
-        if (newScale.y <= 3.0f) // Set a max scale limit
+        if (newScale.y <= 2.0f) // Set a max scale limit
         {
             transform.localScale = newScale; // Adjust scaling
         }
