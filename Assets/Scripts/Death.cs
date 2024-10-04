@@ -1,14 +1,36 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class Death : MonoBehaviour
 {
-    private void OnCollisionEnter2D(Collision2D collision)
+    public List<Vector3> respawnPoints=new List<Vector3>();
+    private GameObject[] players;
+    
+    private void Start()
     {
-        if (collision.gameObject.CompareTag("Spike"))
+        players=GameObject.FindGameObjectsWithTag("Player");
+        if (players!=null)
+            respawnPoints.Add(players[0].transform.position);
+    }
+
+    private void Update()
+    {
+        if (Input.GetButton("Respawn"))
         {
-            Destroy(gameObject);
+            foreach (GameObject player in players)
+            {
+                player.SetActive(true);
+                player.transform.position = respawnPoints.Last();
+            }
         }
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+            other.gameObject.SetActive(false);
     }
 }
