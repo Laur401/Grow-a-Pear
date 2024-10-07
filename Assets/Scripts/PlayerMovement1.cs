@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 //TODO: Change input keys to not hardcoded ones
 //TODO: Merge movement scripts into one
@@ -9,51 +10,60 @@ public class PlayerMovement1 : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float sizeChangeFactor;
-    [SerializeField] private float maxSize=1.0f;
+    [SerializeField] private float maxSize = 1.0f;
     [SerializeField] private GameObject Player1;
     [SerializeField] private GameObject Player2;
     [SerializeField] private float throwForce;
 
     private Rigidbody2D body;
+    private CapsuleCollider2D capsule;
+    private BoxCollider2D feet;
+
     //private Animator anim;
     private bool grounded;
     private bool canThrowPlayer1 = true;
     private bool canThrowPlayer2 = true;
 
+    private Vector2 moveInput;
+
     private void Start()
     {
         // Grab references for Rigidbody and Animator from the object
         body = GetComponent<Rigidbody2D>();
+        capsule = GetComponent<CapsuleCollider2D>();
+        feet = GetComponent<BoxCollider2D>();
         //anim = GetComponent<Animator>();
     }
 
     private void Update()
     {
         HandleMovement();
-        HandleThrowing();
+        FlipSprite();
+        //HandleThrowing();
+    }
+
+
+    private void OnMove(InputValue value)
+    {
+        moveInput = value.Get<Vector2>();
+        Debug.Log(moveInput);
+    }
+
+    private void OnJump(InputValue value)
+    {
+        if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        {
+            return;
+        }
+
+        if (value.isPressed)
+            body.velocity += new Vector2(0f, jumpForce);
     }
 
     private void HandleMovement()
     {
-        // Example Player 1 specific controls
-        // Uncomment and modify as needed for Player 1 controls
-        float horizontalInput = Input.GetAxis("HorizontalP1");
-
-        body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
-
-        // Flip player when moving left or right, maintaining the current scale
-        if (horizontalInput > 0.01f)
-        {
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
-        }
-        else if (horizontalInput < -0.01f)
-        {
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
-        }
-
-        // Jump logic
-        if (Input.GetKey(KeyCode.Space) && grounded)
-            Jump();
+        Vector2 playerVelocity = new Vector2(moveInput.x * speed, body.velocity.y);
+        body.velocity = playerVelocity;
 
         // Scaling logic
         if (Input.GetKeyDown(KeyCode.Z))
@@ -64,8 +74,15 @@ public class PlayerMovement1 : MonoBehaviour
         // Set animator parameters
         //anim.SetBool("run", horizontalInput != 0);
         //anim.SetBool("grounded", grounded);
-        
-        HandleThrowing();
+
+        //HandleThrowing();
+    }
+
+    private void FlipSprite()
+    {
+        bool playerHasHorizontalSpeed = Mathf.Abs(body.velocity.x) > Mathf.Epsilon;
+        if (playerHasHorizontalSpeed)
+            transform.localScale = new Vector2(Mathf.Sign(body.velocity.x), 1.0f);
     }
 
     private void Jump()
@@ -78,7 +95,8 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground")||collision.gameObject.CompareTag("Player")||collision.gameObject.CompareTag("Box"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Player") ||
+            collision.gameObject.CompareTag("Box"))
         {
             grounded = true;
             //anim.SetBool("grounded", true);
@@ -90,7 +108,8 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground")||collision.gameObject.CompareTag("Player")||collision.gameObject.CompareTag("Box"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Player") ||
+            collision.gameObject.CompareTag("Box"))
         {
             grounded = false;
             //anim.SetBool("grounded", false);  // Update animator when leaving the ground
@@ -101,17 +120,20 @@ public class PlayerMovement1 : MonoBehaviour
     {
         if (input)
         {
-            Vector3 newScale = new Vector3(transform.localScale.x*sizeChangeFactor, transform.localScale.y*sizeChangeFactor, 1);
-            
+            Vector3 newScale = new Vector3(transform.localScale.x * sizeChangeFactor,
+                transform.localScale.y * sizeChangeFactor, 1);
+
         }
     }
-    
+
     private void Grow(GameObject player, GameObject otherPlayer)
     {
-        Vector3 newScale = new Vector3(transform.localScale.x * sizeChangeFactor, transform.localScale.y * sizeChangeFactor, 1);
-        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * (1/sizeChangeFactor), otherPlayer.transform.localScale.y * (1/sizeChangeFactor), 1);
+        Vector3 newScale = new Vector3(transform.localScale.x * sizeChangeFactor,
+            transform.localScale.y * sizeChangeFactor, 1);
+        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * (1 / sizeChangeFactor),
+            otherPlayer.transform.localScale.y * (1 / sizeChangeFactor), 1);
 
-        if (newScale.y <= maxSize && otherNewScale.y >= 1/maxSize) // Set a max scale limit
+        if (newScale.y <= maxSize && otherNewScale.y >= 1 / maxSize) // Set a max scale limit
         {
             player.transform.localScale = newScale; // Adjust scaling
             otherPlayer.transform.localScale = otherNewScale;
@@ -120,22 +142,24 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void Shrink(GameObject player, GameObject otherPlayer)
     {
-        Vector3 newScale = new Vector3(transform.localScale.x * (1/sizeChangeFactor), transform.localScale.y * (1/sizeChangeFactor), 1);
-        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * sizeChangeFactor, otherPlayer.transform.localScale.y * sizeChangeFactor, 1);
-        if (newScale.y >= 1/maxSize && otherNewScale.y <= maxSize) // Set a min scale limit
+        Vector3 newScale = new Vector3(transform.localScale.x * (1 / sizeChangeFactor),
+            transform.localScale.y * (1 / sizeChangeFactor), 1);
+        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * sizeChangeFactor,
+            otherPlayer.transform.localScale.y * sizeChangeFactor, 1);
+        if (newScale.y >= 1 / maxSize && otherNewScale.y <= maxSize) // Set a min scale limit
         {
             player.transform.localScale = newScale; // Return to normal size
             otherPlayer.transform.localScale = otherNewScale;
         }
     }
 
-    private void HandleThrowing()
+} /*    private void HandleThrowing() //I commented this out because inputs weren't working with this for some reason
     {
         float distance = Vector2.Distance(Player1.transform.position, Player2.transform.position);
         float maxThrowDistance = 5f;
 
         // Debug log to confirm distance
-        Debug.Log($"Distance between players: {distance}");
+        //Debug.Log($"Distance between players: {distance}");
 
         // Check if within throw distance
         if (distance <= maxThrowDistance)
@@ -182,4 +206,4 @@ public class PlayerMovement1 : MonoBehaviour
         // Debug
         Debug.Log($"{thrower.name} threw {thrown.name} with force: {throwVelocity}");
     }
-}
+}*/
