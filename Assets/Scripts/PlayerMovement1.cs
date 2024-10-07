@@ -2,17 +2,16 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-//TODO: Change input keys to not hardcoded ones
-//TODO: Merge movement scripts into one
-//TODO: Change growth/shrink into one float and treat it as N and 1/N respectively
+//TODO: Change input keys to not hardcoded ones DONE
+//TODO: Merge movement scripts into one DONE
+//TODO: Change growth/shrink into one float and treat it as N and 1/N respectively DONE
 public class PlayerMovement1 : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float sizeChangeFactor;
     [SerializeField] private float maxSize = 1.0f;
-    [SerializeField] private GameObject Player1;
-    [SerializeField] private GameObject Player2;
+    [SerializeField] private GameObject otherPlayer;
     [SerializeField] private float throwForce;
 
     private Rigidbody2D body;
@@ -25,6 +24,7 @@ public class PlayerMovement1 : MonoBehaviour
     private bool canThrowPlayer2 = true;
 
     private Vector2 moveInput;
+    private float growShrinkInput;
 
     private void Start()
     {
@@ -39,15 +39,12 @@ public class PlayerMovement1 : MonoBehaviour
     {
         HandleMovement();
         FlipSprite();
+        ChangeSize();
         //HandleThrowing();
     }
-
-
-    private void OnMove(InputValue value)
-    {
-        moveInput = value.Get<Vector2>();
-        Debug.Log(moveInput);
-    }
+    
+    private void OnMove(InputValue value) => moveInput = value.Get<Vector2>();
+    private void OnGrowShrink(InputValue value) => growShrinkInput = value.Get<float>();
 
     private void OnJump(InputValue value)
     {
@@ -59,17 +56,11 @@ public class PlayerMovement1 : MonoBehaviour
         if (value.isPressed)
             body.velocity += new Vector2(0f, jumpForce);
     }
-
+    
     private void HandleMovement()
     {
         Vector2 playerVelocity = new Vector2(moveInput.x * speed, body.velocity.y);
         body.velocity = playerVelocity;
-
-        // Scaling logic
-        if (Input.GetKeyDown(KeyCode.Z))
-            Grow(Player1, Player2);
-        if (Input.GetKeyDown(KeyCode.X))
-            Shrink(Player1, Player2);
 
         // Set animator parameters
         //anim.SetBool("run", horizontalInput != 0);
@@ -85,45 +76,16 @@ public class PlayerMovement1 : MonoBehaviour
             transform.localScale = new Vector2(Mathf.Sign(body.velocity.x), 1.0f);
     }
 
-    private void Jump()
+    private void ChangeSize()
     {
-        float adjustedJumpForce = jumpForce * transform.localScale.y; // Adjust jump force based on scale
-        body.velocity = new Vector2(body.velocity.x, adjustedJumpForce);
-        //anim.SetTrigger("jump");
-        grounded = false;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Player") ||
-            collision.gameObject.CompareTag("Box"))
-        {
-            grounded = true;
-            //anim.SetBool("grounded", true);
-        }
-
-        canThrowPlayer1 = true;
-        canThrowPlayer2 = true;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Player") ||
-            collision.gameObject.CompareTag("Box"))
-        {
-            grounded = false;
-            //anim.SetBool("grounded", false);  // Update animator when leaving the ground
-        }
-    }
-
-    private void SizeChange(bool input)
-    {
-        if (input)
-        {
-            Vector3 newScale = new Vector3(transform.localScale.x * sizeChangeFactor,
-                transform.localScale.y * sizeChangeFactor, 1);
-
-        }
+        float playerSizeX=Mathf.Clamp(transform.localScale.x*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize);
+        float playerSizeY=Mathf.Clamp(transform.localScale.y*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize);
+        float otherPlayerSizeX=Mathf.Clamp(otherPlayer.transform.position.x*sizeChangeFactor,1/maxSize,maxSize);
+        float otherPlayerSizeY=Mathf.Clamp(otherPlayer.transform.position.y*sizeChangeFactor,1/maxSize,maxSize);
+        Vector3 playerSize = new Vector3(playerSizeX,playerSizeY,1);
+        Vector3 otherPlayerSize = new Vector3(otherPlayerSizeX,otherPlayerSizeY,1);
+        transform.localScale = playerSize;
+        otherPlayer.transform.localScale = otherPlayerSize;
     }
 
     private void Grow(GameObject player, GameObject otherPlayer)
