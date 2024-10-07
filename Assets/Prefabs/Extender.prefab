@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9044627697906173667}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Stop Point
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 6750111627576957071}
   - component: {fileID: 7087647836191269012}
   - component: {fileID: 8681118145481449285}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5905787491235720836}
   - component: {fileID: 301179412755594045}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Extender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2384822963520742832}
   - component: {fileID: 4062716162018920507}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: bridgeLogs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 3449546537401800866}
   - component: {fileID: 6912253008202765378}
   - component: {fileID: 7640669023162466961}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sprite Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}

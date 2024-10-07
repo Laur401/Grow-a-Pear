@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 //TODO: Change input keys to not hardcoded ones DONE
 //TODO: Merge movement scripts into one DONE
@@ -25,6 +26,7 @@ public class PlayerMovement1 : MonoBehaviour
 
     private Vector2 moveInput;
     private float growShrinkInput;
+    private int direction;
 
     private void Start()
     {
@@ -38,8 +40,9 @@ public class PlayerMovement1 : MonoBehaviour
     private void Update()
     {
         HandleMovement();
-        FlipSprite();
         ChangeSize();
+        FlipSprite();
+        
         //HandleThrowing();
     }
     
@@ -48,11 +51,7 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void OnJump(InputValue value)
     {
-        if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground")))
-        {
-            return;
-        }
-
+        if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object"))) {return;}
         if (value.isPressed)
             body.velocity += new Vector2(0f, jumpForce);
     }
@@ -73,19 +72,23 @@ public class PlayerMovement1 : MonoBehaviour
     {
         bool playerHasHorizontalSpeed = Mathf.Abs(body.velocity.x) > Mathf.Epsilon;
         if (playerHasHorizontalSpeed)
-            transform.localScale = new Vector2(Mathf.Sign(body.velocity.x), 1.0f);
+            transform.localScale=new Vector2(Mathf.Abs(transform.localScale.x)*Mathf.Sign(body.velocity.x),transform.localScale.y);
     }
 
     private void ChangeSize()
     {
-        float playerSizeX=Mathf.Clamp(transform.localScale.x*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize);
-        float playerSizeY=Mathf.Clamp(transform.localScale.y*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize);
-        float otherPlayerSizeX=Mathf.Clamp(otherPlayer.transform.position.x*sizeChangeFactor,1/maxSize,maxSize);
-        float otherPlayerSizeY=Mathf.Clamp(otherPlayer.transform.position.y*sizeChangeFactor,1/maxSize,maxSize);
-        Vector3 playerSize = new Vector3(playerSizeX,playerSizeY,1);
-        Vector3 otherPlayerSize = new Vector3(otherPlayerSizeX,otherPlayerSizeY,1);
-        transform.localScale = playerSize;
-        otherPlayer.transform.localScale = otherPlayerSize;
+        bool playerIsChangingSize = Mathf.Abs(growShrinkInput) > Mathf.Epsilon;
+        if (playerIsChangingSize)
+        {
+            float playerSizeX=Mathf.Clamp(Mathf.Abs(transform.localScale.x)*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(transform.localScale.x);
+            float playerSizeY=Mathf.Clamp(Mathf.Abs(transform.localScale.y)*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(transform.localScale.y);
+            float otherPlayerSizeX=Mathf.Clamp(Mathf.Abs(otherPlayer.transform.localScale.x)*Mathf.Pow(sizeChangeFactor,-growShrinkInput),1/maxSize,maxSize); //TODO: Fix direction and inverse scale for the other player (possibly just call its ChangeSize function?)
+            float otherPlayerSizeY=Mathf.Clamp(otherPlayer.transform.localScale.y*Mathf.Pow(sizeChangeFactor,-growShrinkInput),1/maxSize,maxSize);
+            Vector3 playerSize = new Vector3(playerSizeX,playerSizeY,1);
+            Vector3 otherPlayerSize = new Vector3(otherPlayerSizeX,otherPlayerSizeY,1);
+            transform.localScale = playerSize;
+            otherPlayer.transform.localScale = otherPlayerSize;
+        }
     }
 
     private void Grow(GameObject player, GameObject otherPlayer)

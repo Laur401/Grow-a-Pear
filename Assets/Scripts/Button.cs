@@ -26,7 +26,7 @@ public class Button : MonoBehaviour
         {
             itemCount++;
             spriteRenderer.sprite = pressedSprite;
-            buttonActivator.ButtonTracker(true);
+            buttonActivator.ButtonTracker(true); //TODO: Fix this being called every time a trigger enters
         }
     }
 

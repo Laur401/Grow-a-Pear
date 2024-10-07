@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7971667639841652803}
   - component: {fileID: 2095740340095123076}
   - component: {fileID: 2101112066881311647}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bud
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -103,10 +103,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 6
   jumpForce: 4
-  sizeChangeFactor: 0
-  maxSize: 1
-  Player1: {fileID: 1566664141462315912}
-  Player2: {fileID: 0}
+  sizeChangeFactor: 1.1
+  maxSize: 2
+  otherPlayer: {fileID: 0}
   throwForce: 20
 --- !u!50 &47044096866741008
 Rigidbody2D:
