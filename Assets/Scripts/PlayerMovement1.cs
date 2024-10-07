@@ -8,8 +8,8 @@ public class PlayerMovement1 : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
-    [SerializeField] private float growFactor;
-    [SerializeField] private float shrinkFactor;
+    [SerializeField] private float sizeChangeFactor;
+    [SerializeField] private float maxSize=1.0f;
     [SerializeField] private GameObject Player1;
     [SerializeField] private GameObject Player2;
     [SerializeField] private float throwForce;
@@ -20,7 +20,7 @@ public class PlayerMovement1 : MonoBehaviour
     private bool canThrowPlayer1 = true;
     private bool canThrowPlayer2 = true;
 
-    private void Awake()
+    private void Start()
     {
         // Grab references for Rigidbody and Animator from the object
         body = GetComponent<Rigidbody2D>();
@@ -97,12 +97,21 @@ public class PlayerMovement1 : MonoBehaviour
         }
     }
 
+    private void SizeChange(bool input)
+    {
+        if (input)
+        {
+            Vector3 newScale = new Vector3(transform.localScale.x*sizeChangeFactor, transform.localScale.y*sizeChangeFactor, 1);
+            
+        }
+    }
+    
     private void Grow(GameObject player, GameObject otherPlayer)
     {
-        Vector3 newScale = new Vector3(transform.localScale.x * growFactor, transform.localScale.y * growFactor, 1);
-        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * shrinkFactor, otherPlayer.transform.localScale.y * shrinkFactor, 1);
+        Vector3 newScale = new Vector3(transform.localScale.x * sizeChangeFactor, transform.localScale.y * sizeChangeFactor, 1);
+        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * (1/sizeChangeFactor), otherPlayer.transform.localScale.y * (1/sizeChangeFactor), 1);
 
-        if (newScale.y <= 2.4f && otherNewScale.y >= 0.1f) // Set a max scale limit
+        if (newScale.y <= maxSize && otherNewScale.y >= 1/maxSize) // Set a max scale limit
         {
             player.transform.localScale = newScale; // Adjust scaling
             otherPlayer.transform.localScale = otherNewScale;
@@ -111,9 +120,9 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void Shrink(GameObject player, GameObject otherPlayer)
     {
-        Vector3 newScale = new Vector3(transform.localScale.x * shrinkFactor, transform.localScale.y * shrinkFactor, 1);
-        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * growFactor, otherPlayer.transform.localScale.y * growFactor, 1);
-        if (newScale.y >= 0.1f && otherNewScale.y <= 2.4f) // Set a min scale limit
+        Vector3 newScale = new Vector3(transform.localScale.x * (1/sizeChangeFactor), transform.localScale.y * (1/sizeChangeFactor), 1);
+        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * sizeChangeFactor, otherPlayer.transform.localScale.y * sizeChangeFactor, 1);
+        if (newScale.y >= 1/maxSize && otherNewScale.y <= maxSize) // Set a min scale limit
         {
             player.transform.localScale = newScale; // Return to normal size
             otherPlayer.transform.localScale = otherNewScale;

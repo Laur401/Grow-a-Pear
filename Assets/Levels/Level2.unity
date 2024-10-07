@@ -149,11 +149,11 @@ Transform:
   m_GameObject: {fileID: 30941544}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 0.829, z: 0}
+  m_LocalPosition: {x: 0.0020000935, y: -0.13199997, z: 0}
   m_LocalScale: {x: 1.9944, y: 0.01879, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 344041642}
+  m_Father: {fileID: 364942024}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &30941546
 BoxCollider2D:
@@ -2472,10 +2472,11 @@ Transform:
   m_GameObject: {fileID: 364942023}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.998, y: 0.964, z: 0}
+  m_LocalPosition: {x: 0.998, y: 1.085, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 30941545}
   m_Father: {fileID: 344041642}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &364942025
@@ -2833,6 +2834,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4789762331928616795, guid: 9e35a3279a69ab738bd80c1a6bd7de43, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5149551735115915639, guid: 9e35a3279a69ab738bd80c1a6bd7de43, type: 3}
       propertyPath: m_Name
       value: YellowLock2x1 (1)
@@ -2843,7 +2848,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8507554513341087937, guid: 9e35a3279a69ab738bd80c1a6bd7de43, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.46
+      value: 12.51
       objectReference: {fileID: 0}
     - target: {fileID: 8507554513341087937, guid: 9e35a3279a69ab738bd80c1a6bd7de43, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4757,9 +4762,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6750111627576957071, guid: cc5479694c35e805d92d73151a81f97d, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 30941545}
     - targetCorrespondingSourceObject: {fileID: 6750111627576957071, guid: cc5479694c35e805d92d73151a81f97d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 364942024}

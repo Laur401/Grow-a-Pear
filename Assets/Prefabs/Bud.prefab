@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 932529833717192016}
   - component: {fileID: 47044096866741008}
   - component: {fileID: 1238835077215288945}
+  - component: {fileID: 7971667639841652803}
   m_Layer: 0
   m_Name: Bud
   m_TagString: Player
@@ -102,8 +103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 6
   jumpForce: 4
-  growFactor: 1.1
-  shrinkFactor: 0.9090909
+  sizeChangeFactor: 0
+  maxSize: 1
   Player1: {fileID: 1566664141462315912}
   Player2: {fileID: 0}
   throwForce: 20
@@ -214,3 +215,33 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.0001, y: 0.0001}
   m_Direction: 0
+--- !u!114 &7971667639841652803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566664141462315912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 40eecd3cadf39e0f29fa83e8ebc2dc05, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
