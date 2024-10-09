@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 3449546537401800866}
   - component: {fileID: 6912253008202765378}
   - component: {fileID: 7640669023162466961}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Sprite Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}

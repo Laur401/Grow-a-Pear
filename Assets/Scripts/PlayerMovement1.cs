@@ -14,6 +14,7 @@ public class PlayerMovement1 : MonoBehaviour
     [SerializeField] private float maxSize = 1.0f;
     [SerializeField] private GameObject otherPlayer;
     [SerializeField] private float throwForce;
+    [SerializeField] InputActionAsset inputActionAsset;
 
     private Rigidbody2D body;
     private CapsuleCollider2D capsule;
@@ -28,6 +29,14 @@ public class PlayerMovement1 : MonoBehaviour
     private float growShrinkInput;
     private int direction;
 
+    enum Players { Player1, Player2 };
+    [SerializeField] Players playerName;
+    private InputActionMap player;
+    private InputAction move;
+    private InputAction jump;
+    private InputAction grab;
+    private InputAction growShrink;
+
     private void Start()
     {
         // Grab references for Rigidbody and Animator from the object
@@ -35,25 +44,40 @@ public class PlayerMovement1 : MonoBehaviour
         capsule = GetComponent<CapsuleCollider2D>();
         feet = GetComponent<BoxCollider2D>();
         //anim = GetComponent<Animator>();
+        inputActionAsset.Enable();
+        player = inputActionAsset.FindActionMap($"{playerName.ToString()}");
+        move = player.FindAction("Move");
+        jump = player.FindAction("Jump");
+        grab = player.FindAction("Grab");
+        growShrink = player.FindAction("GrowShrink");
+
     }
 
     private void Update()
     {
+        InputChecker();
         HandleMovement();
         ChangeSize();
         FlipSprite();
         
         //HandleThrowing();
     }
-    
-    private void OnMove(InputValue value) => moveInput = value.Get<Vector2>();
-    private void OnGrowShrink(InputValue value) => growShrinkInput = value.Get<float>();
 
-    private void OnJump(InputValue value)
+    private void InputChecker()
+    {
+        OnMove(move);
+        OnJump(jump);
+        OnGrowShrink(growShrink);
+    }
+
+    private void OnMove(InputAction value) => moveInput = value.ReadValue<Vector2>();
+    private void OnGrowShrink(InputAction value) => growShrinkInput = value.ReadValue<float>();
+
+    private void OnJump(InputAction value)
     {
         if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object"))) {return;}
-        if (value.isPressed)
-            body.velocity += new Vector2(0f, jumpForce);
+        if (jump.IsPressed())
+            body.velocity = new Vector2(body.velocity.x, jumpForce*transform.localScale.y);
     }
     
     private void HandleMovement()

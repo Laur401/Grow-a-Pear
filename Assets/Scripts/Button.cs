@@ -11,7 +11,7 @@ public class Button : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
     private ButtonActivator buttonActivator;
-    private int itemCount = 0;
+    private Dictionary<GameObject,int> pressingObjects = new Dictionary<GameObject,int>();
     
     void Start()
     {
@@ -20,26 +20,33 @@ public class Button : MonoBehaviour
         spriteRenderer.sprite = unpressedSprite;
     }
 
+    //private void Update() => Debug.Log(pressingObjects.Count);
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.isTrigger==false)
+        if (other.isTrigger) return;
+        if (!pressingObjects.TryAdd(other.gameObject, 1))
         {
-            itemCount++;
+            if (pressingObjects.Count==1)
+                buttonActivator.ButtonTracker(true);
+            pressingObjects[other.gameObject]++;
             spriteRenderer.sprite = pressedSprite;
-            buttonActivator.ButtonTracker(true); //TODO: Fix this being called every time a trigger enters
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.isTrigger==false)
+        if (other.isTrigger) return;
+        if (pressingObjects.ContainsKey(other.gameObject))
         {
-            itemCount--;
-            if (itemCount == 0)
-            {
-                spriteRenderer.sprite = unpressedSprite;
-                buttonActivator.ButtonTracker(false);
-            }
+            pressingObjects[other.gameObject]--;
+            if (pressingObjects[other.gameObject] == 0)
+                pressingObjects.Remove(other.gameObject);
+        }
+        if (pressingObjects.Count==0)
+        {
+            spriteRenderer.sprite = unpressedSprite;
+            buttonActivator.ButtonTracker(false);
         }
     }
 }

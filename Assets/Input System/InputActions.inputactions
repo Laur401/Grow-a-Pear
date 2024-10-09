@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Grab",
+                    "type": "Button",
+                    "id": "8dcc7d8b-ecbe-49c2-b208-f8f9947c2492",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -62,7 +71,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";KeyboardWASD",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -73,7 +82,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";KeyboardWASD",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -84,7 +93,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";KeyboardWASD",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -95,7 +104,7 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";KeyboardWASD",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -128,7 +137,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";KeyboardWASD",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -150,7 +159,7 @@
                     "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";KeyboardWASD",
                     "action": "GrowShrink",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -161,21 +170,32 @@
                     "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";KeyboardWASD",
                     "action": "GrowShrink",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "e809daa1-c38c-4e88-919d-72d0e4d8b080",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardWASD",
+                    "action": "Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
         {
             "name": "Player2",
-            "id": "76d9a15c-dbdd-4c65-bbf0-5104240b87c7",
+            "id": "5406da38-6d7b-4692-88ba-260fe3efc2fb",
             "actions": [
                 {
                     "name": "Move",
                     "type": "Value",
-                    "id": "0ad98cc4-9992-4f65-81e9-d5d4030c32df",
+                    "id": "b793b209-d437-4835-8361-52e8f619354a",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -184,7 +204,7 @@
                 {
                     "name": "Jump",
                     "type": "Button",
-                    "id": "2e7433f0-fee1-4700-9853-c87598ce81cc",
+                    "id": "d795b066-1d8e-4271-aa48-191a59c524f1",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -193,17 +213,26 @@
                 {
                     "name": "GrowShrink",
                     "type": "Value",
-                    "id": "affc71e2-ed45-4799-b4cb-0789b5328be5",
+                    "id": "24dd5573-e5ef-4731-b6b0-923f3f4f31dd",
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Grab",
+                    "type": "Button",
+                    "id": "8daf0451-d3e4-4430-9ef5-8408a06dc79c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "Arrows",
-                    "id": "f6d80a60-cd3d-4b0f-a826-90ebf5251fd0",
+                    "id": "a433a307-c61d-430e-b1cc-4a9a4baaf050",
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
@@ -214,62 +243,62 @@
                 },
                 {
                     "name": "up",
-                    "id": "fc30c750-028e-4592-a0b9-8f88c6e66785",
+                    "id": "9be5af6e-a9b0-401c-98ef-0eb336cb6b26",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";KeyboardArrows",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "down",
-                    "id": "445f61f4-f4e4-4351-9426-abf48f685c5b",
+                    "id": "b21e03ea-cf80-4afd-9c2a-623fa8a45ab6",
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";KeyboardArrows",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "left",
-                    "id": "ce566114-5ee5-4b10-8dad-7780727adcec",
+                    "id": "4b2779b7-e470-4436-96f8-de18acc3007d",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";KeyboardArrows",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "right",
-                    "id": "8d11afd0-6cb6-42d6-9462-5ed7809b1403",
+                    "id": "7daeadce-d3eb-47a2-a253-72262b7b9bbc",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";KeyboardArrows",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "",
-                    "id": "525bd9dd-b0d1-487a-9937-56fce5056460",
+                    "id": "3b893c93-b519-4413-a2f1-05cf1c9e72d4",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";KeyboardArrows",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "1D Axis",
-                    "id": "7968c1c0-afe8-4103-acd6-6aab2671184d",
+                    "id": "6b53ca2b-3f97-4e3e-994d-e76d1e2d9b43",
                     "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
@@ -279,26 +308,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Negative",
-                    "id": "7ae03cf5-984b-479a-85fc-94f1d99cbbdd",
+                    "name": "negative",
+                    "id": "1379deb2-20de-4a7d-94b4-83a96e4eadf7",
                     "path": "<Keyboard>/period",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";KeyboardArrows",
                     "action": "GrowShrink",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Positive",
-                    "id": "be217957-d2e4-4009-87a5-2cd8279a6286",
+                    "name": "positive",
+                    "id": "e8b8b7c8-7687-41b1-ab26-d6b81bee2ac0",
                     "path": "<Keyboard>/comma",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";KeyboardArrows",
                     "action": "GrowShrink",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "be337104-1048-4ca9-99cd-1a218fb05482",
+                    "path": "<Keyboard>/slash",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardArrows",
+                    "action": "Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -875,6 +915,28 @@
             "devices": [
                 {
                     "devicePath": "<XRController>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "KeyboardWASD",
+            "bindingGroup": "KeyboardWASD",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "KeyboardArrows",
+            "bindingGroup": "KeyboardArrows",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
                     "isOptional": false,
                     "isOR": false
                 }
