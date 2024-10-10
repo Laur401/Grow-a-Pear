@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -79,7 +80,15 @@ public class PlayerMovement1 : MonoBehaviour
         if (jump.IsPressed())
             body.velocity = new Vector2(body.velocity.x, jumpForce*transform.localScale.y);
     }
-    
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        Pickup pickup = other.GetComponent<Pickup>();
+        if (pickup!=null)
+            pickup.PickUpHandler(grab,gameObject);
+        
+    }
+
     private void HandleMovement()
     {
         Vector2 playerVelocity = new Vector2(moveInput.x * speed, body.velocity.y);

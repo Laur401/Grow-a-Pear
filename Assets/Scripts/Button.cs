@@ -22,16 +22,15 @@ public class Button : MonoBehaviour
 
     //private void Update() => Debug.Log(pressingObjects.Count);
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other) //pressingObjects.Count is fine, it's the buttonActivator falling out of sync.
     {
         if (other.isTrigger) return;
-        if (!pressingObjects.TryAdd(other.gameObject, 1))
+        if (pressingObjects.TryAdd(other.gameObject, 1))
         {
-            if (pressingObjects.Count==1)
-                buttonActivator.ButtonTracker(true);
-            pressingObjects[other.gameObject]++;
+            buttonActivator.ButtonTracker(true, gameObject);
             spriteRenderer.sprite = pressedSprite;
         }
+        else pressingObjects[other.gameObject]++;
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -46,7 +45,7 @@ public class Button : MonoBehaviour
         if (pressingObjects.Count==0)
         {
             spriteRenderer.sprite = unpressedSprite;
-            buttonActivator.ButtonTracker(false);
+            buttonActivator.ButtonTracker(false, gameObject);
         }
     }
 }
