@@ -20,4 +20,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Levels/Finish.unity
     guid: 2c49e1453075fc13db3a9d5173541a48
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: c59c22d9f5915137d81b8c00fde4a9a3, type: 2}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 40eecd3cadf39e0f29fa83e8ebc2dc05, type: 3}

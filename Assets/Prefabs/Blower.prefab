@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 535575178920558584}
   - component: {fileID: 5389466867646196179}
   - component: {fileID: 5486387332501658358}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: metalPlatformWire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 1744411980646210407}
   - component: {fileID: 6702039657332874757}
   - component: {fileID: 451981781383918021}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Blower
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -2,56 +2,68 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Pickup : MonoBehaviour
 {
     Rigidbody2D rb;
     [SerializeField] private float followDistance = 1.0f;
     GameObject player;
-    bool pickedUp;
-    bool wasKinematic;
+    bool pickedUp=false;
+    bool grabHappened = false;
+
+    private Vector3 defaultScale;
     // Start is called before the first frame update
     void Start()
     {
         rb=GetComponent<Rigidbody2D>();
-        pickedUp = false;
-        wasKinematic = rb.isKinematic;
+        defaultScale=transform.localScale;
     }
 
     void Update()
     {
         if (pickedUp)
         {
-            transform.position=player.transform.position+player.transform.right*followDistance; //TODO: Have the item "in front" of the player (aka the direction where the player is turned to)
+            transform.position=player.transform.position+followDistance * player.transform.localScale.x * player.transform.right;
             transform.rotation=player.transform.rotation;
-            // TODO: Scale the object to the size of the player.
+            transform.localScale = player.transform.localScale;
         }
-        
     }
 
-    void OnTriggerStay2D(Collider2D other)
+    public void PickUpHandler(InputAction grabInput, GameObject playerObject)
     {
-        if (other.gameObject.CompareTag("Player")&&Input.GetKeyDown(KeyCode.Q)&&pickedUp==false)
-            PickObjUp(other.gameObject);
-        else if (Input.GetKeyDown(KeyCode.Q)&&pickedUp==true) //TODO: Fix player not being able to put the item down if trigger is just out of reach
-            UnPickObjUp();
+        if (grabInput.triggered&&!grabHappened)
+        {
+            if (!pickedUp)
+            {
+                PickObjUp(playerObject);
+                grabHappened = true;
+                Debug.Log("grab");
+            }
+            else
+            {
+                UnPickObjUp();
+                grabHappened = true;
+                Debug.Log("ungrab");
+            }
+        }
+        else if (grabInput.WasCompletedThisFrame())
+            grabHappened = false;
     }
 
     void PickObjUp(GameObject playerObject)
     {
         pickedUp = true;
-        player=playerObject;
-        rb.isKinematic=true;
+        player = playerObject;
+        rb.isKinematic = true;
         //TODO: Disable collision if picked up
-        //rb.freezeRotation = true;
     }
     void UnPickObjUp()
     {
         pickedUp = false;
-        //rb.freezeRotation = false;
-        transform.parent=null;
-        rb.isKinematic=false;
         player = null;
+        rb.isKinematic = false;
+        transform.localScale = defaultScale;
     }
 }
 

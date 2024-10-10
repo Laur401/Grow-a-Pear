@@ -1,108 +1,137 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-//TODO: Change input keys to not hardcoded ones
-//TODO: Merge movement scripts into one
-//TODO: Change growth/shrink into one float and treat it as N and 1/N respectively
+//TODO: Change input keys to not hardcoded ones DONE
+//TODO: Merge movement scripts into one DONE
+//TODO: Change growth/shrink into one float and treat it as N and 1/N respectively DONE
 public class PlayerMovement1 : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
-    [SerializeField] private float growFactor;
-    [SerializeField] private float shrinkFactor;
-    [SerializeField] private GameObject Player1;
-    [SerializeField] private GameObject Player2;
+    [SerializeField] private float sizeChangeFactor;
+    [SerializeField] private float maxSize = 1.0f;
+    [SerializeField] private GameObject otherPlayer;
     [SerializeField] private float throwForce;
+    [SerializeField] InputActionAsset inputActionAsset;
 
     private Rigidbody2D body;
+    private CapsuleCollider2D capsule;
+    private BoxCollider2D feet;
+
     //private Animator anim;
     private bool grounded;
     private bool canThrowPlayer1 = true;
     private bool canThrowPlayer2 = true;
 
-    private void Awake()
+    private Vector2 moveInput;
+    private float growShrinkInput;
+    private int direction;
+
+    enum Players { Player1, Player2 };
+    [SerializeField] Players playerName;
+    private InputActionMap player;
+    private InputAction move;
+    private InputAction jump;
+    private InputAction grab;
+    private InputAction growShrink;
+
+    private void Start()
     {
         // Grab references for Rigidbody and Animator from the object
         body = GetComponent<Rigidbody2D>();
+        capsule = GetComponent<CapsuleCollider2D>();
+        feet = GetComponent<BoxCollider2D>();
         //anim = GetComponent<Animator>();
+        inputActionAsset.Enable();
+        player = inputActionAsset.FindActionMap($"{playerName.ToString()}");
+        move = player.FindAction("Move");
+        jump = player.FindAction("Jump");
+        grab = player.FindAction("Grab");
+        growShrink = player.FindAction("GrowShrink");
+
     }
 
     private void Update()
     {
+        InputChecker();
         HandleMovement();
-        HandleThrowing();
+        ChangeSize();
+        FlipSprite();
+        
+        //HandleThrowing();
+    }
+
+    private void InputChecker()
+    {
+        OnMove(move);
+        OnJump(jump);
+        OnGrowShrink(growShrink);
+    }
+
+    private void OnMove(InputAction value) => moveInput = value.ReadValue<Vector2>();
+    private void OnGrowShrink(InputAction value) => growShrinkInput = value.ReadValue<float>();
+
+    private void OnJump(InputAction value)
+    {
+        if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object"))) {return;}
+        if (jump.IsPressed())
+            body.velocity = new Vector2(body.velocity.x, jumpForce*transform.localScale.y);
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        Pickup pickup = other.GetComponent<Pickup>();
+        if (pickup!=null)
+            pickup.PickUpHandler(grab,gameObject);
+        
     }
 
     private void HandleMovement()
     {
-        // Example Player 1 specific controls
-        // Uncomment and modify as needed for Player 1 controls
-        float horizontalInput = Input.GetAxis("HorizontalP1");
-
-        body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
-
-        // Flip player when moving left or right, maintaining the current scale
-        if (horizontalInput > 0.01f)
-        {
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
-        }
-        else if (horizontalInput < -0.01f)
-        {
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
-        }
-
-        // Jump logic
-        if (Input.GetKey(KeyCode.Space) && grounded)
-            Jump();
-
-        // Scaling logic
-        if (Input.GetKeyDown(KeyCode.Z))
-            Grow(Player1, Player2);
-        if (Input.GetKeyDown(KeyCode.X))
-            Shrink(Player1, Player2);
+        Vector2 playerVelocity = new Vector2(moveInput.x * speed, body.velocity.y);
+        body.velocity = playerVelocity;
 
         // Set animator parameters
         //anim.SetBool("run", horizontalInput != 0);
         //anim.SetBool("grounded", grounded);
-        
-        HandleThrowing();
+
+        //HandleThrowing();
     }
 
-    private void Jump()
+    private void FlipSprite()
     {
-        float adjustedJumpForce = jumpForce * transform.localScale.y; // Adjust jump force based on scale
-        body.velocity = new Vector2(body.velocity.x, adjustedJumpForce);
-        //anim.SetTrigger("jump");
-        grounded = false;
+        bool playerHasHorizontalSpeed = Mathf.Abs(body.velocity.x) > Mathf.Epsilon;
+        if (playerHasHorizontalSpeed)
+            transform.localScale=new Vector2(Mathf.Abs(transform.localScale.x)*Mathf.Sign(body.velocity.x),transform.localScale.y);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void ChangeSize()
     {
-        if (collision.gameObject.CompareTag("Ground")||collision.gameObject.CompareTag("Player")||collision.gameObject.CompareTag("Box"))
+        bool playerIsChangingSize = Mathf.Abs(growShrinkInput) > Mathf.Epsilon;
+        if (playerIsChangingSize)
         {
-            grounded = true;
-            //anim.SetBool("grounded", true);
-        }
-
-        canThrowPlayer1 = true;
-        canThrowPlayer2 = true;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground")||collision.gameObject.CompareTag("Player")||collision.gameObject.CompareTag("Box"))
-        {
-            grounded = false;
-            //anim.SetBool("grounded", false);  // Update animator when leaving the ground
+            float playerSizeX=Mathf.Clamp(Mathf.Abs(transform.localScale.x)*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(transform.localScale.x);
+            float playerSizeY=Mathf.Clamp(Mathf.Abs(transform.localScale.y)*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(transform.localScale.y);
+            float otherPlayerSizeX=Mathf.Clamp(Mathf.Abs(otherPlayer.transform.localScale.x)*Mathf.Pow(sizeChangeFactor,-growShrinkInput),1/maxSize,maxSize); //TODO: Fix direction and inverse scale for the other player (possibly just call its ChangeSize function?)
+            float otherPlayerSizeY=Mathf.Clamp(otherPlayer.transform.localScale.y*Mathf.Pow(sizeChangeFactor,-growShrinkInput),1/maxSize,maxSize);
+            Vector3 playerSize = new Vector3(playerSizeX,playerSizeY,1);
+            Vector3 otherPlayerSize = new Vector3(otherPlayerSizeX,otherPlayerSizeY,1);
+            transform.localScale = playerSize;
+            otherPlayer.transform.localScale = otherPlayerSize;
         }
     }
 
     private void Grow(GameObject player, GameObject otherPlayer)
     {
-        Vector3 newScale = new Vector3(transform.localScale.x * growFactor, transform.localScale.y * growFactor, 1);
-        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * shrinkFactor, otherPlayer.transform.localScale.y * shrinkFactor, 1);
+        Vector3 newScale = new Vector3(transform.localScale.x * sizeChangeFactor,
+            transform.localScale.y * sizeChangeFactor, 1);
+        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * (1 / sizeChangeFactor),
+            otherPlayer.transform.localScale.y * (1 / sizeChangeFactor), 1);
 
-        if (newScale.y <= 2.4f && otherNewScale.y >= 0.1f) // Set a max scale limit
+        if (newScale.y <= maxSize && otherNewScale.y >= 1 / maxSize) // Set a max scale limit
         {
             player.transform.localScale = newScale; // Adjust scaling
             otherPlayer.transform.localScale = otherNewScale;
@@ -111,22 +140,24 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void Shrink(GameObject player, GameObject otherPlayer)
     {
-        Vector3 newScale = new Vector3(transform.localScale.x * shrinkFactor, transform.localScale.y * shrinkFactor, 1);
-        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * growFactor, otherPlayer.transform.localScale.y * growFactor, 1);
-        if (newScale.y >= 0.1f && otherNewScale.y <= 2.4f) // Set a min scale limit
+        Vector3 newScale = new Vector3(transform.localScale.x * (1 / sizeChangeFactor),
+            transform.localScale.y * (1 / sizeChangeFactor), 1);
+        Vector3 otherNewScale = new Vector3(otherPlayer.transform.localScale.x * sizeChangeFactor,
+            otherPlayer.transform.localScale.y * sizeChangeFactor, 1);
+        if (newScale.y >= 1 / maxSize && otherNewScale.y <= maxSize) // Set a min scale limit
         {
             player.transform.localScale = newScale; // Return to normal size
             otherPlayer.transform.localScale = otherNewScale;
         }
     }
 
-    private void HandleThrowing()
+} /*    private void HandleThrowing() //I commented this out because inputs weren't working with this for some reason
     {
         float distance = Vector2.Distance(Player1.transform.position, Player2.transform.position);
         float maxThrowDistance = 5f;
 
         // Debug log to confirm distance
-        Debug.Log($"Distance between players: {distance}");
+        //Debug.Log($"Distance between players: {distance}");
 
         // Check if within throw distance
         if (distance <= maxThrowDistance)
@@ -173,4 +204,4 @@ public class PlayerMovement1 : MonoBehaviour
         // Debug
         Debug.Log($"{thrower.name} threw {thrown.name} with force: {throwVelocity}");
     }
-}
+}*/

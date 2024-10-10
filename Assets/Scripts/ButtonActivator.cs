@@ -1,23 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ButtonActivator : MonoBehaviour
 {
     [SerializeField] GameObject[] affectedObjects;
     private IActivator activator;
-    private int buttonsPressed = 0;
+    private List<GameObject> buttons = new List<GameObject>();
 
-    public void ButtonTracker(bool value)
+    public void ButtonTracker(bool value, GameObject button)
     {
         if (value)
-            buttonsPressed++;
+            if (!buttons.Contains(button))
+                buttons.Add(button);
         if (!value)
-            buttonsPressed--;
-        if (buttonsPressed == 0)
+            if (buttons.Contains(button))
+                buttons.Remove(button);
+        if (buttons.Count == 0)
             ObjectStateChanger(false);
-        if (buttonsPressed >= 1)
+        if (buttons.Count >= 1)
             ObjectStateChanger(true);
+        Debug.Log($"This is the number of buttons: {buttons.Count}");
     }
     
     void ObjectStateChanger(bool state)
