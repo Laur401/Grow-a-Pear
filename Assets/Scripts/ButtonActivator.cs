@@ -21,7 +21,7 @@ public class ButtonActivator : MonoBehaviour
             ObjectStateChanger(false);
         if (buttons.Count >= 1)
             ObjectStateChanger(true);
-        Debug.Log($"This is the number of buttons: {buttons.Count}");
+        //Debug.Log($"This is the number of buttons: {buttons.Count}");
     }
     
     void ObjectStateChanger(bool state)
