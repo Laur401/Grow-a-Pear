@@ -13,7 +13,7 @@ public class LevelFinish : MonoBehaviour
         if (other.CompareTag("Player"))
             playerCount++;
         if (playerCount >= 2)
-            Invoke("NextLevel", 3.0f);
+            Invoke(nameof(NextLevel), 3.0f);
     }
 
     void OnTriggerExit2D (Collider2D other)
