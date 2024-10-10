@@ -11,17 +11,16 @@ public class Crumbler : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (((1 << other.gameObject.layer) & LayerMask.GetMask("Player")) != 0)
-            Invoke(nameof(CollisionDisabler), 3f);
+            StartCoroutine(CollisionChanger());
     }
 
-    void CollisionDisabler()
+    IEnumerator CollisionChanger()
     {
+        yield return new WaitForSeconds(3f);
         //insert animation stuff here
         GetComponent<Collider2D>().enabled = false;
-        Invoke(nameof(CollisionEnabler),3f);
-    }
-    void CollisionEnabler()
-    {
+        yield return new WaitForSeconds(3f);
+        //insert animation stuff here
         GetComponent<Collider2D>().enabled = true;
     }
 }
