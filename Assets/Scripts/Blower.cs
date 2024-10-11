@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Blower : MonoBehaviour
 {
-    [SerializeField] private float blowForce = 10.0f;
+    [SerializeField] private float blowForce = 20f;
     private void OnTriggerStay2D(Collider2D other)
     {
         Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
