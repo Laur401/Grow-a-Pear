@@ -8,36 +8,37 @@ public class Teleporter : MonoBehaviour
     [SerializeField] private List<GameObject> teleporters;
     [SerializeField] private bool canTeleportPlayers;
     [SerializeField] private bool canTeleportObjects;
+    private int nextTeleporterIndex;
+    private Collider2D nextTeleporter;
+    private Teleporter nextTeleporterScript;
+    //public bool teleportedInto = false;
+    public bool teleportedInto { get; set; }
     void Start()
     {
-        
+        int index = teleporters.IndexOf(gameObject);
+        nextTeleporterIndex = (index + 1) % teleporters.Count;
+        nextTeleporter = teleporters[nextTeleporterIndex].GetComponent<BoxCollider2D>();
+        nextTeleporterScript = teleporters[nextTeleporterIndex].GetComponent<Teleporter>();
+        Debug.Log("Is this even working?");
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D (Collider2D other)
     {
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
+        if (teleportedInto||other.isTrigger) return;
         if (canTeleportPlayers&&other.gameObject.layer==LayerMask.NameToLayer("Player"))
-        {
-            int index = teleporters.IndexOf(gameObject);
-            StartCoroutine(moveToNextTeleporter(other, index));
-        }
+            StartCoroutine(moveToNextTeleporter(other, false));
         if (canTeleportObjects&&other.gameObject.layer==LayerMask.NameToLayer("Object"))
-        {
-            int index = teleporters.IndexOf(gameObject);
-            StartCoroutine(moveToNextTeleporter(other, index));
-        }
+            StartCoroutine(moveToNextTeleporter(other, true));
     }
-    
-    IEnumerator moveToNextTeleporter(Collider other, int index)
+
+    private void OnTriggerExit2D(Collider2D other) => teleportedInto = false;
+
+    IEnumerator moveToNextTeleporter(Collider2D other, bool nested)
     {
         yield return new WaitForSeconds(3.0f);
-        int nextTeleporter=(index+1)%teleporters.Count;
-        other.gameObject.transform.position = teleporters[nextTeleporter].transform.position;
-        //TODO: Make sure it doesn't teleport again after teleporting
+        nextTeleporterScript.teleportedInto = true;
+        if (nested)
+            other.transform.parent.position = nextTeleporter.transform.position;
+        else other.transform.position = nextTeleporter.transform.position;
     }
 }
