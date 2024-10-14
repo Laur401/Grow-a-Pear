@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 //TODO: Change input keys to not hardcoded ones DONE
 //TODO: Merge movement scripts into one DONE
@@ -64,7 +65,8 @@ public class PlayerMovement1 : MonoBehaviour
         InputChecker();
         ChangeSize();
         FlipSprite();
-        
+        DebugFunction();
+
         //HandleThrowing();
     }
 
@@ -104,12 +106,17 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void HandleMovement()
     {
-        body.velocity = new Vector2(moveInput.x * speed, body.velocity.y);
+        if (move.IsPressed())
+            body.velocity = new Vector2(moveInput.x * speed, body.velocity.y);
+        //body.AddForce(new Vector2(moveInput.x*speed*Time.deltaTime,0),ForceMode2D.Impulse);
         if (extraSpeed != Vector2.zero)
         {
-            body.AddForce(extraSpeed,ForceMode2D.Impulse);
+            //body.velocity += extraSpeed;
+            body.AddForce(extraSpeed,ForceMode2D.Force);
             extraSpeed = Vector2.zero;
         }
+        else if (feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object")))
+            body.velocity=Vector2.MoveTowards(body.velocity,Vector2.zero,1.2f);
         
         // Set animator parameters
         //anim.SetBool("run", horizontalInput != 0);
@@ -166,6 +173,16 @@ public class PlayerMovement1 : MonoBehaviour
             player.transform.localScale = newScale; // Return to normal size
             otherPlayer.transform.localScale = otherNewScale;
         }
+    }
+    
+    private void DebugFunction()
+    {
+        if (Input.GetKey(KeyCode.BackQuote))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (Input.GetKey(KeyCode.Home))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex-1);
+        if (Input.GetKey(KeyCode.PageUp))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 
 } /*    private void HandleThrowing() //I commented this out because inputs weren't working with this for some reason
