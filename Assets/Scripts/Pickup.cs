@@ -38,13 +38,13 @@ public class Pickup : MonoBehaviour
             {
                 PickObjUp(playerObject);
                 grabHappened = true;
-                Debug.Log("grab");
+                //Debug.Log("grab");
             }
             else
             {
                 UnPickObjUp();
                 grabHappened = true;
-                Debug.Log("ungrab");
+                //Debug.Log("ungrab");
             }
         }
         else if (grabInput.WasCompletedThisFrame())

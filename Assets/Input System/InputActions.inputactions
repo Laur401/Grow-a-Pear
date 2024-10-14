@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "4e0d2f63-ed71-42be-b12c-bd2f0b18dd65",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -185,6 +194,17 @@
                     "action": "Grab",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a8bf195-b450-4883-ab3e-15b16dd7a56c",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardWASD",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -223,6 +243,15 @@
                     "name": "Grab",
                     "type": "Button",
                     "id": "8daf0451-d3e4-4430-9ef5-8408a06dc79c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "0610611c-7b2b-447f-9019-4f50836e9c9d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -337,6 +366,17 @@
                     "processors": "",
                     "groups": ";KeyboardArrows",
                     "action": "Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "af3eb541-3a69-4028-80ba-3be22e2a4d07",
+                    "path": "<Keyboard>/rightCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardArrows",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

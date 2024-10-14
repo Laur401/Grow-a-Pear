@@ -22,7 +22,7 @@ public class Button : MonoBehaviour
 
     //private void Update() => Debug.Log(pressingObjects.Count);
 
-    private void OnTriggerEnter2D(Collider2D other) //pressingObjects.Count is fine, it's the buttonActivator falling out of sync.
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.isTrigger) return;
         if (pressingObjects.TryAdd(other.gameObject, 1))

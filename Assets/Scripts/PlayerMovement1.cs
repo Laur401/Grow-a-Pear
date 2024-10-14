@@ -37,6 +37,7 @@ public class PlayerMovement1 : MonoBehaviour
     private InputAction jump;
     private InputAction grab;
     private InputAction growShrink;
+    private InputAction interact;
 
     private void Start()
     {
@@ -51,6 +52,7 @@ public class PlayerMovement1 : MonoBehaviour
         jump = player.FindAction("Jump");
         grab = player.FindAction("Grab");
         growShrink = player.FindAction("GrowShrink");
+        interact = player.FindAction("Interact");
 
     }
 
@@ -84,9 +86,11 @@ public class PlayerMovement1 : MonoBehaviour
     private void OnTriggerStay2D(Collider2D other)
     {
         Pickup pickup = other.GetComponent<Pickup>();
+        Lever lever = other.GetComponent<Lever>();
         if (pickup!=null)
             pickup.PickUpHandler(grab,gameObject);
-        
+        if (lever!=null)
+            lever.LeverFlipHandler(interact);
     }
 
     private void HandleMovement()

@@ -13,7 +13,7 @@ public class LevelFinish : MonoBehaviour
         if (other.CompareTag("Player"))
             playerCount++;
         if (playerCount >= 2)
-            Invoke("NextLevel", 3.0f);
+            StartCoroutine(NextLevel());
     }
 
     void OnTriggerExit2D (Collider2D other)
@@ -22,8 +22,9 @@ public class LevelFinish : MonoBehaviour
             playerCount--;
     }
 
-    private void NextLevel()
+    private IEnumerator NextLevel()
     {
+        yield return new WaitForSeconds(3.0f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

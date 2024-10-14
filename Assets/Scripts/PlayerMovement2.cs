@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerMovement2 : MonoBehaviour
 {
-    //TODO: Change input keys to not hardcoded ones
+    //NOTE: THIS SCRIPT IS NO LONGER USED. Use PlayerMovement1 instead.
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float growFactor;
