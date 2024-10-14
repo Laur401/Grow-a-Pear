@@ -19,7 +19,6 @@ public class Teleporter : MonoBehaviour
         nextTeleporterIndex = (index + 1) % teleporters.Count;
         nextTeleporter = teleporters[nextTeleporterIndex].GetComponent<BoxCollider2D>();
         nextTeleporterScript = teleporters[nextTeleporterIndex].GetComponent<Teleporter>();
-        Debug.Log("Is this even working?");
     }
 
     private void OnTriggerEnter2D (Collider2D other)
