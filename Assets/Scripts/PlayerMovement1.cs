@@ -29,6 +29,7 @@ public class PlayerMovement1 : MonoBehaviour
     private Vector2 moveInput;
     private float growShrinkInput;
     private int direction;
+    private float targetVelocity;
 
     enum Players { Player1, Player2 };
     [SerializeField] Players playerName;
@@ -38,6 +39,8 @@ public class PlayerMovement1 : MonoBehaviour
     private InputAction grab;
     private InputAction growShrink;
     private InputAction interact;
+
+    [DoNotSerialize] public Vector2 extraSpeed = new Vector2(0, 0);
 
     private void Start()
     {
@@ -59,11 +62,15 @@ public class PlayerMovement1 : MonoBehaviour
     private void Update()
     {
         InputChecker();
-        HandleMovement();
         ChangeSize();
         FlipSprite();
         
         //HandleThrowing();
+    }
+
+    private void FixedUpdate()
+    {
+        HandleMovement();
     }
 
     private void InputChecker()
@@ -81,6 +88,8 @@ public class PlayerMovement1 : MonoBehaviour
         if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object"))) {return;}
         if (jump.IsPressed())
             body.velocity = new Vector2(body.velocity.x, jumpForce*transform.localScale.y);
+        if (jump.WasReleasedThisFrame()&&body.velocity.y>0)
+            body.velocity=new Vector2(body.velocity.x,body.velocity.y*0.5f);
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -95,9 +104,13 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void HandleMovement()
     {
-        Vector2 playerVelocity = new Vector2(moveInput.x * speed, body.velocity.y);
-        body.velocity = playerVelocity;
-
+        body.velocity = new Vector2(moveInput.x * speed, body.velocity.y);
+        if (extraSpeed != Vector2.zero)
+        {
+            body.AddForce(extraSpeed,ForceMode2D.Impulse);
+            extraSpeed = Vector2.zero;
+        }
+        
         // Set animator parameters
         //anim.SetBool("run", horizontalInput != 0);
         //anim.SetBool("grounded", grounded);
