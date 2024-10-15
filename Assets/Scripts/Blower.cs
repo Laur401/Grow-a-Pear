@@ -11,7 +11,6 @@ public class Blower : MonoBehaviour, IActivator
     {
         get => active;
         set => active = value;
-
     }
     private void OnTriggerStay2D(Collider2D other)
     {
