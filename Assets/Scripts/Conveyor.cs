@@ -6,7 +6,7 @@ using UnityEngine;
 public class Conveyor : MonoBehaviour, IActivator
 {
     [SerializeField] private float speed = 20f;
-
+    [SerializeField] private bool isActive = true;
     private bool active = false;
     public bool Active
     {
@@ -16,8 +16,8 @@ public class Conveyor : MonoBehaviour, IActivator
     private void OnCollisionStay2D(Collision2D other)
     {
         if (other.collider.isTrigger) return;
-        
-        MoveObject(other);
+        if (active!=isActive)
+            MoveObject(other);
         /*if (other.gameObject.layer==LayerMask.NameToLayer("Player"))
             MoveObject(other,true);
         if (other.gameObject.layer==LayerMask.NameToLayer("Object"))
