@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement1 : MonoBehaviour
 {
     [SerializeField] private float speed;
-    [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpBoost=1f;
     [SerializeField] private float sizeChangeFactor;
     [SerializeField] private float maxSize = 1.0f;
     [SerializeField] private GameObject otherPlayer;
@@ -41,7 +41,7 @@ public class PlayerMovement1 : MonoBehaviour
     private InputAction growShrink;
     private InputAction interact;
 
-    [DoNotSerialize] public Vector2 extraSpeed = new Vector2(0, 0);
+    [NonSerialized] public Vector2 extraSpeed = new Vector2(0, 0);
 
     private void Start()
     {
@@ -88,10 +88,17 @@ public class PlayerMovement1 : MonoBehaviour
     private void OnJump(InputAction value)
     {
         if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object"))) {return;}
+
         if (jump.IsPressed())
-            body.velocity = new Vector2(body.velocity.x, jumpForce*transform.localScale.y);
-        if (jump.WasReleasedThisFrame()&&body.velocity.y>0)
-            body.velocity=new Vector2(body.velocity.x,body.velocity.y*0.5f);
+        {
+            //body.velocity = new Vector2(body.velocity.x, jumpForce*(1f/transform.localScale.y));
+            float jumpHeight = (2 / transform.localScale.y)+jumpBoost;
+            body.AddForce(Mathf.Sqrt(jumpHeight*-2*Physics2D.gravity.y)*transform.up.normalized,ForceMode2D.Impulse);
+        }
+            
+        /*if (jump.WasReleasedThisFrame()&&body.velocity.y>0)
+            body.velocity=new Vector2(body.velocity.x,body.velocity.y*0.5f);*/
+        
     }
 
     private void OnTriggerStay2D(Collider2D other)
