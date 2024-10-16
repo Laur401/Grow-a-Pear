@@ -17,6 +17,7 @@ public class PlayerMovement1 : MonoBehaviour
     [SerializeField] private GameObject otherPlayer;
     [SerializeField] private float throwForce;
     [SerializeField] InputActionAsset inputActionAsset;
+    [SerializeField] private float coyoteTime = 0.5f;
 
     private Rigidbody2D body;
     private CapsuleCollider2D capsule;
@@ -31,6 +32,7 @@ public class PlayerMovement1 : MonoBehaviour
     private float growShrinkInput;
     private int direction;
     private float targetVelocity;
+    private float jumpTimer;
 
     enum Players { Player1, Player2 };
     [SerializeField] Players playerName;
@@ -87,13 +89,18 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void OnJump(InputAction value)
     {
-        if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object"))) {return;}
+        if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object")))
+        {
+            jumpTimer -= Time.deltaTime;
+        }
+        else jumpTimer = coyoteTime;
 
-        if (jump.IsPressed())
+        if (jump.IsPressed()&&jumpTimer>0)
         {
             //body.velocity = new Vector2(body.velocity.x, jumpForce*(1f/transform.localScale.y));
             float jumpHeight = (2 / transform.localScale.y)+jumpBoost;
             body.AddForce(Mathf.Sqrt(jumpHeight*-2*Physics2D.gravity.y)*transform.up.normalized,ForceMode2D.Impulse);
+            jumpTimer = 0;
         }
             
         /*if (jump.WasReleasedThisFrame()&&body.velocity.y>0)
