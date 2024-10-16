@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -33,6 +35,7 @@ public class PlayerMovement1 : MonoBehaviour
     private int direction;
     private float targetVelocity;
     private float jumpTimer;
+    private bool canJump;
 
     enum Players { Player1, Player2 };
     [SerializeField] Players playerName;
@@ -75,12 +78,13 @@ public class PlayerMovement1 : MonoBehaviour
     private void FixedUpdate()
     {
         HandleMovement();
+        OnJump(jump);
     }
 
     private void InputChecker()
     {
         OnMove(move);
-        OnJump(jump);
+        
         OnGrowShrink(growShrink);
     }
 
@@ -92,20 +96,36 @@ public class PlayerMovement1 : MonoBehaviour
         if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object")))
         {
             jumpTimer -= Time.deltaTime;
+            if (jumpTimer <= 0)
+                StartCoroutine(CanJump());
+            return;
         }
         else jumpTimer = coyoteTime;
-
-        if (jump.IsPressed()&&jumpTimer>0)
+        if (jump.triggered && jumpTimer > 0 && canJump)
         {
             //body.velocity = new Vector2(body.velocity.x, jumpForce*(1f/transform.localScale.y));
-            float jumpHeight = (2 / transform.localScale.y)+jumpBoost;
-            body.AddForce(Mathf.Sqrt(jumpHeight*-2*Physics2D.gravity.y)*transform.up.normalized,ForceMode2D.Impulse);
+            float jumpHeight = (2 / transform.localScale.y) + jumpBoost;
+            body.AddForce(Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y) * transform.up.normalized,
+                ForceMode2D.Impulse);
+            Debug.Log($"AddForce: {Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y)}, jumpHeight: {jumpHeight}, localScale: {transform.localScale.y}, jumpBoost: {jumpBoost}");
+            StartCoroutine(CanJump());
             jumpTimer = 0;
         }
+        
+
+        
             
         /*if (jump.WasReleasedThisFrame()&&body.velocity.y>0)
             body.velocity=new Vector2(body.velocity.x,body.velocity.y*0.5f);*/
         
+    }
+
+    IEnumerator CanJump()
+    {
+        canJump = false;
+        yield return new WaitForSeconds(0.1f);
+        yield return new WaitUntil(()=>feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object")));
+        canJump = true;
     }
 
     private void OnTriggerStay2D(Collider2D other)
