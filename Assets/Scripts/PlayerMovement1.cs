@@ -37,6 +37,8 @@ public class PlayerMovement1 : MonoBehaviour
     private float jumpTimer;
     private bool canJump;
 
+    private Pickup heldItem;
+
     enum Players { Player1, Player2 };
     [SerializeField] Players playerName;
     private InputActionMap player;
@@ -71,7 +73,8 @@ public class PlayerMovement1 : MonoBehaviour
         ChangeSize();
         FlipSprite();
         DebugFunction();
-
+        if (heldItem)
+            ItemHolding();
         //HandleThrowing();
     }
 
@@ -84,7 +87,6 @@ public class PlayerMovement1 : MonoBehaviour
     private void InputChecker()
     {
         OnMove(move);
-        
         OnGrowShrink(growShrink);
     }
 
@@ -111,13 +113,8 @@ public class PlayerMovement1 : MonoBehaviour
             StartCoroutine(CanJump());
             jumpTimer = 0;
         }
-        
-
-        
-            
         /*if (jump.WasReleasedThisFrame()&&body.velocity.y>0)
             body.velocity=new Vector2(body.velocity.x,body.velocity.y*0.5f);*/
-        
     }
 
     IEnumerator CanJump()
@@ -132,10 +129,25 @@ public class PlayerMovement1 : MonoBehaviour
     {
         Pickup pickup = other.GetComponent<Pickup>();
         Lever lever = other.GetComponent<Lever>();
-        if (pickup!=null)
-            pickup.PickUpHandler(grab,gameObject);
-        if (lever!=null)
+        if (pickup&&!heldItem)
+        {
+            if (pickup.PickUpHandler(grab, gameObject) == 1)
+            {
+                heldItem = pickup;
+                Debug.Log("Picked up!");
+            }
+        }
+        if (lever)
             lever.LeverFlipHandler(interact);
+    }
+
+    private void ItemHolding()
+    {
+        if (heldItem.PickUpHandler(grab, gameObject) == 2)
+        {
+            heldItem = null;
+            Debug.Log("Unpicked up!");
+        }
     }
 
     private void HandleMovement()
@@ -161,9 +173,9 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void FlipSprite()
     {
-        bool playerHasHorizontalSpeed = Mathf.Abs(body.velocity.x) > Mathf.Epsilon;
+        bool playerHasHorizontalSpeed = Mathf.Abs(moveInput.x) > Mathf.Epsilon;
         if (playerHasHorizontalSpeed)
-            transform.localScale=new Vector2(Mathf.Abs(transform.localScale.x)*Mathf.Sign(body.velocity.x),transform.localScale.y);
+            transform.localScale=new Vector2(Mathf.Abs(transform.localScale.x)*Mathf.Sign(moveInput.x),transform.localScale.y);
     }
 
     private void ChangeSize()
@@ -173,8 +185,8 @@ public class PlayerMovement1 : MonoBehaviour
         {
             float playerSizeX=Mathf.Clamp(Mathf.Abs(transform.localScale.x)*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(transform.localScale.x);
             float playerSizeY=Mathf.Clamp(Mathf.Abs(transform.localScale.y)*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(transform.localScale.y);
-            float otherPlayerSizeX=Mathf.Clamp(Mathf.Abs(otherPlayer.transform.localScale.x)*Mathf.Pow(sizeChangeFactor,-growShrinkInput),1/maxSize,maxSize); //TODO: Fix direction and inverse scale for the other player (possibly just call its ChangeSize function?)
-            float otherPlayerSizeY=Mathf.Clamp(otherPlayer.transform.localScale.y*Mathf.Pow(sizeChangeFactor,-growShrinkInput),1/maxSize,maxSize);
+            float otherPlayerSizeX=Mathf.Clamp(Mathf.Abs(otherPlayer.transform.localScale.x)*Mathf.Pow(sizeChangeFactor,-growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(otherPlayer.transform.localScale.x); //TODO: Fix direction and inverse scale for the other player (possibly just call its ChangeSize function?)
+            float otherPlayerSizeY=Mathf.Clamp(otherPlayer.transform.localScale.y*Mathf.Pow(sizeChangeFactor,-growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(otherPlayer.transform.localScale.y);
             Vector3 playerSize = new Vector3(playerSizeX,playerSizeY,1);
             Vector3 otherPlayerSize = new Vector3(otherPlayerSizeX,otherPlayerSizeY,1);
             transform.localScale = playerSize;
