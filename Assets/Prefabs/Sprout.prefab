@@ -121,7 +121,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.45022345}
+  m_Offset: {x: 0, y: -0.49053168}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -132,7 +132,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.25, y: 0.1}
+  m_Size: {x: 0.21, y: 0.026638508}
   m_EdgeRadius: 0
 --- !u!70 &5502595602098882869
 CapsuleCollider2D:
@@ -167,7 +167,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.31, y: 1}
+  m_Size: {x: 0.37, y: 1}
   m_Direction: 0
 --- !u!50 &3931119807236343716
 Rigidbody2D:
@@ -194,7 +194,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &5431553988604653938
 MonoBehaviour:
@@ -239,10 +239,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 6
-  jumpForce: 4
+  jumpBoost: 1
   sizeChangeFactor: 1.1
   maxSize: 2
   otherPlayer: {fileID: 0}
   throwForce: 0
   inputActionAsset: {fileID: -944628639613478452, guid: 40eecd3cadf39e0f29fa83e8ebc2dc05, type: 3}
+  coyoteTime: 0.5
   playerName: 1

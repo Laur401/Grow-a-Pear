@@ -5394,7 +5394,7 @@ GameObject:
   - component: {fileID: 816598145}
   - component: {fileID: 816598144}
   - component: {fileID: 816598146}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Foreground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12745,7 +12745,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1505004584
 Transform:
   m_ObjectHideFlags: 0

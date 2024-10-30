@@ -1,0 +1,12 @@
+Need to fix:
+
+Player rotation (FlipSprite());
+Player rotation while scaling; DONE, could be done better if we have time
+Sliding boxes (increase weight/friction?);
+LevelD camera;
+
+Need to create:
+
+Death for the characters
+GUI
+Menus

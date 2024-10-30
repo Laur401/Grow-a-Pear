@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 //TODO: Change input keys to not hardcoded ones DONE
 //TODO: Merge movement scripts into one DONE
@@ -10,12 +13,13 @@ using UnityEngine.UI;
 public class PlayerMovement1 : MonoBehaviour
 {
     [SerializeField] private float speed;
-    [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpBoost=1f;
     [SerializeField] private float sizeChangeFactor;
     [SerializeField] private float maxSize = 1.0f;
     [SerializeField] private GameObject otherPlayer;
     [SerializeField] private float throwForce;
     [SerializeField] InputActionAsset inputActionAsset;
+    [SerializeField] private float coyoteTime = 0.5f;
 
     private Rigidbody2D body;
     private CapsuleCollider2D capsule;
@@ -29,6 +33,11 @@ public class PlayerMovement1 : MonoBehaviour
     private Vector2 moveInput;
     private float growShrinkInput;
     private int direction;
+    private float targetVelocity;
+    private float jumpTimer;
+    private bool canJump;
+
+    private Pickup heldItem;
 
     enum Players { Player1, Player2 };
     [SerializeField] Players playerName;
@@ -38,6 +47,8 @@ public class PlayerMovement1 : MonoBehaviour
     private InputAction grab;
     private InputAction growShrink;
     private InputAction interact;
+
+    [NonSerialized] public Vector2 extraSpeed = new Vector2(0, 0);
 
     private void Start()
     {
@@ -59,17 +70,23 @@ public class PlayerMovement1 : MonoBehaviour
     private void Update()
     {
         InputChecker();
-        HandleMovement();
         ChangeSize();
         FlipSprite();
-        
+        DebugFunction();
+        if (heldItem)
+            ItemHolding();
         //HandleThrowing();
+    }
+
+    private void FixedUpdate()
+    {
+        HandleMovement();
+        OnJump(jump);
     }
 
     private void InputChecker()
     {
         OnMove(move);
-        OnJump(jump);
         OnGrowShrink(growShrink);
     }
 
@@ -78,26 +95,75 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void OnJump(InputAction value)
     {
-        if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object"))) {return;}
-        if (jump.IsPressed())
-            body.velocity = new Vector2(body.velocity.x, jumpForce*transform.localScale.y);
+        if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object")))
+        {
+            jumpTimer -= Time.deltaTime;
+            if (jumpTimer <= 0)
+                StartCoroutine(CanJump());
+            return;
+        }
+        else jumpTimer = coyoteTime;
+        if (jump.triggered && jumpTimer > 0 && canJump)
+        {
+            //body.velocity = new Vector2(body.velocity.x, jumpForce*(1f/transform.localScale.y));
+            float jumpHeight = (2 / transform.localScale.y) + jumpBoost;
+            body.AddForce(Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y) * transform.up.normalized,
+                ForceMode2D.Impulse);
+            Debug.Log($"AddForce: {Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y)}, jumpHeight: {jumpHeight}, localScale: {transform.localScale.y}, jumpBoost: {jumpBoost}");
+            StartCoroutine(CanJump());
+            jumpTimer = 0;
+        }
+        /*if (jump.WasReleasedThisFrame()&&body.velocity.y>0)
+            body.velocity=new Vector2(body.velocity.x,body.velocity.y*0.5f);*/
+    }
+
+    IEnumerator CanJump()
+    {
+        canJump = false;
+        yield return new WaitForSeconds(0.1f);
+        yield return new WaitUntil(()=>feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object")));
+        canJump = true;
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
         Pickup pickup = other.GetComponent<Pickup>();
         Lever lever = other.GetComponent<Lever>();
-        if (pickup!=null)
-            pickup.PickUpHandler(grab,gameObject);
-        if (lever!=null)
+        if (pickup&&!heldItem)
+        {
+            if (pickup.PickUpHandler(grab, gameObject) == 1)
+            {
+                heldItem = pickup;
+                Debug.Log("Picked up!");
+            }
+        }
+        if (lever)
             lever.LeverFlipHandler(interact);
+    }
+
+    private void ItemHolding()
+    {
+        if (heldItem.PickUpHandler(grab, gameObject) == 2)
+        {
+            heldItem = null;
+            Debug.Log("Unpicked up!");
+        }
     }
 
     private void HandleMovement()
     {
-        Vector2 playerVelocity = new Vector2(moveInput.x * speed, body.velocity.y);
-        body.velocity = playerVelocity;
-
+        if (move.IsPressed())
+            body.velocity = new Vector2(moveInput.x * speed, body.velocity.y);
+        //body.AddForce(new Vector2(moveInput.x*speed*Time.deltaTime,0),ForceMode2D.Impulse);
+        if (extraSpeed != Vector2.zero)
+        {
+            //body.velocity += extraSpeed;
+            body.AddForce(extraSpeed,ForceMode2D.Force);
+            extraSpeed = Vector2.zero;
+        }
+        else if (feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object")))
+            body.velocity=Vector2.MoveTowards(body.velocity,Vector2.zero,1.2f);
+        
         // Set animator parameters
         //anim.SetBool("run", horizontalInput != 0);
         //anim.SetBool("grounded", grounded);
@@ -107,9 +173,9 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void FlipSprite()
     {
-        bool playerHasHorizontalSpeed = Mathf.Abs(body.velocity.x) > Mathf.Epsilon;
+        bool playerHasHorizontalSpeed = Mathf.Abs(moveInput.x) > Mathf.Epsilon;
         if (playerHasHorizontalSpeed)
-            transform.localScale=new Vector2(Mathf.Abs(transform.localScale.x)*Mathf.Sign(body.velocity.x),transform.localScale.y);
+            transform.localScale=new Vector2(Mathf.Abs(transform.localScale.x)*Mathf.Sign(moveInput.x),transform.localScale.y);
     }
 
     private void ChangeSize()
@@ -119,8 +185,8 @@ public class PlayerMovement1 : MonoBehaviour
         {
             float playerSizeX=Mathf.Clamp(Mathf.Abs(transform.localScale.x)*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(transform.localScale.x);
             float playerSizeY=Mathf.Clamp(Mathf.Abs(transform.localScale.y)*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(transform.localScale.y);
-            float otherPlayerSizeX=Mathf.Clamp(Mathf.Abs(otherPlayer.transform.localScale.x)*Mathf.Pow(sizeChangeFactor,-growShrinkInput),1/maxSize,maxSize); //TODO: Fix direction and inverse scale for the other player (possibly just call its ChangeSize function?)
-            float otherPlayerSizeY=Mathf.Clamp(otherPlayer.transform.localScale.y*Mathf.Pow(sizeChangeFactor,-growShrinkInput),1/maxSize,maxSize);
+            float otherPlayerSizeX=Mathf.Clamp(Mathf.Abs(otherPlayer.transform.localScale.x)*Mathf.Pow(sizeChangeFactor,-growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(otherPlayer.transform.localScale.x); //TODO: Fix direction and inverse scale for the other player (possibly just call its ChangeSize function?)
+            float otherPlayerSizeY=Mathf.Clamp(otherPlayer.transform.localScale.y*Mathf.Pow(sizeChangeFactor,-growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(otherPlayer.transform.localScale.y);
             Vector3 playerSize = new Vector3(playerSizeX,playerSizeY,1);
             Vector3 otherPlayerSize = new Vector3(otherPlayerSizeX,otherPlayerSizeY,1);
             transform.localScale = playerSize;
@@ -153,6 +219,16 @@ public class PlayerMovement1 : MonoBehaviour
             player.transform.localScale = newScale; // Return to normal size
             otherPlayer.transform.localScale = otherNewScale;
         }
+    }
+    
+    private void DebugFunction()
+    {
+        if (Input.GetKey(KeyCode.BackQuote))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (Input.GetKey(KeyCode.Home))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex-1);
+        if (Input.GetKey(KeyCode.PageUp))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 
 } /*    private void HandleThrowing() //I commented this out because inputs weren't working with this for some reason

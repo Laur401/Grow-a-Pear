@@ -6315,7 +6315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &781444837
 Transform:
   m_ObjectHideFlags: 0
@@ -7008,7 +7008,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &985988890
 Transform:
   m_ObjectHideFlags: 0
@@ -7323,7 +7323,7 @@ GameObject:
   - component: {fileID: 1199281894}
   - component: {fileID: 1199281893}
   - component: {fileID: 1199281892}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Foreground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11790,7 +11790,7 @@ GameObject:
   - component: {fileID: 1657303881}
   - component: {fileID: 1657303880}
   - component: {fileID: 1657303879}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SmallForeground
   m_TagString: Untagged
   m_Icon: {fileID: 0}

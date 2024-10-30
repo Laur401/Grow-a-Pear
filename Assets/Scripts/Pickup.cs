@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,8 +10,9 @@ public class Pickup : MonoBehaviour
     Rigidbody2D rb;
     [SerializeField] private float followDistance = 1.0f;
     GameObject player;
-    bool pickedUp=false;
+    bool pickedUp = false;
     bool grabHappened = false;
+    bool cont = false;
 
     private Vector3 defaultScale;
     // Start is called before the first frame update
@@ -30,28 +32,32 @@ public class Pickup : MonoBehaviour
         }
     }
 
-    public void PickUpHandler(InputAction grabInput, GameObject playerObject)
+    public int PickUpHandler(InputAction grabInput, GameObject playerObject)
     {
         if (grabInput.triggered&&!grabHappened)
         {
             if (!pickedUp)
             {
-                PickObjUp(playerObject);
+                StartCoroutine(PickObjUp(playerObject));
                 grabHappened = true;
+                return 1; //1 for picked up, 2 for unpicked, 0 for no change
                 //Debug.Log("grab");
             }
             else
             {
-                UnPickObjUp();
+                //UnPickObjUp();
+                cont = true;
                 grabHappened = true;
+                return 2;
                 //Debug.Log("ungrab");
             }
         }
         else if (grabInput.WasCompletedThisFrame())
             grabHappened = false;
+        return 0;
     }
 
-    void PickObjUp(GameObject playerObject)
+   /* void PickObjUp(GameObject playerObject)
     {
         pickedUp = true;
         player = playerObject;
@@ -60,6 +66,21 @@ public class Pickup : MonoBehaviour
     }
     void UnPickObjUp()
     {
+        pickedUp = false;
+        player = null;
+        rb.isKinematic = false;
+        transform.localScale = defaultScale;
+    }*/
+
+    IEnumerator PickObjUp(GameObject playerObject)
+    {
+        pickedUp = true;
+        player = playerObject;
+        rb.isKinematic = true;
+        
+        yield return new WaitUntil(() => cont);
+        cont = false;
+        
         pickedUp = false;
         player = null;
         rb.isKinematic = false;
