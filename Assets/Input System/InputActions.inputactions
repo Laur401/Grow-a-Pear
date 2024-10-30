@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Respawn",
+                    "type": "Button",
+                    "id": "569c2d0c-e7dd-4778-afed-53315a408363",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -247,6 +256,17 @@
                     "action": "DebugSceneLoader",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "b1961db5-f1e1-413b-afb3-2d4893240544",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Respawn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -294,6 +314,15 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "0610611c-7b2b-447f-9019-4f50836e9c9d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Respawn",
+                    "type": "Button",
+                    "id": "540931c6-daf1-4eb0-8cbf-26a79d260d7c",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -419,6 +448,17 @@
                     "processors": "",
                     "groups": ";KeyboardArrows",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "adc24d17-69e6-41c0-976b-79dc4900c247",
+                    "path": "<Keyboard>/quote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Respawn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

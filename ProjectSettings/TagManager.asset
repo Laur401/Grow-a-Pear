@@ -10,6 +10,8 @@ TagManager:
   - Camera1
   - Box
   - Locked
+  - Deadly
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
