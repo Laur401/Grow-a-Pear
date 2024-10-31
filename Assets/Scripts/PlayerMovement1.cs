@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -19,7 +20,8 @@ public class PlayerMovement1 : MonoBehaviour
     [SerializeField] private GameObject otherPlayer;
     [SerializeField] private float throwForce;
     [SerializeField] InputActionAsset inputActionAsset;
-    [SerializeField] private float coyoteTime = 0.5f;
+    [SerializeField] private float coyoteTime = 0.2f;
+    [SerializeField] private float jumpBufferTime = 0.2f;
 
     private Rigidbody2D body;
     private CapsuleCollider2D capsule;
@@ -34,7 +36,8 @@ public class PlayerMovement1 : MonoBehaviour
     private float growShrinkInput;
     private int direction;
     private float targetVelocity;
-    private float jumpTimer;
+    private float coyoteTimer;
+    private float bufferTimer;
     private bool canJump;
 
     private Pickup heldItem;
@@ -93,36 +96,64 @@ public class PlayerMovement1 : MonoBehaviour
     private void OnMove(InputAction value) => moveInput = value.ReadValue<Vector2>();
     private void OnGrowShrink(InputAction value) => growShrinkInput = value.ReadValue<float>();
 
+    private bool coroutineIsCalled = false;
     private void OnJump(InputAction value)
     {
+        //Debug.Log($"Coyote timer: {coyoteTimer}, Buffer timer: {bufferTimer}");
         if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object")))
         {
-            jumpTimer -= Time.deltaTime;
-            if (jumpTimer <= 0)
+            if (jump.triggered && canJump && coyoteTimer > 0)
+            {
+                Jump();
+                Debug.Log("Coyote jump");
+                return;
+            }
+            coyoteTimer -= Time.deltaTime;
+            bufferTimer -= Time.deltaTime;
+            if (coyoteTimer <= 0 && !coroutineIsCalled)
                 StartCoroutine(CanJump());
+            if (jump.triggered)
+                bufferTimer = jumpBufferTime;
             return;
         }
-        else jumpTimer = coyoteTime;
-        if (jump.triggered && jumpTimer > 0 && canJump)
+        coyoteTimer = coyoteTime;
+        if (canJump && bufferTimer > 0)
         {
-            //body.velocity = new Vector2(body.velocity.x, jumpForce*(1f/transform.localScale.y));
-            float jumpHeight = (2 / transform.localScale.y) + jumpBoost;
-            body.AddForce(Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y) * transform.up.normalized,
-                ForceMode2D.Impulse);
-            Debug.Log($"AddForce: {Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y)}, jumpHeight: {jumpHeight}, localScale: {transform.localScale.y}, jumpBoost: {jumpBoost}");
-            StartCoroutine(CanJump());
-            jumpTimer = 0;
+            Jump();
+            Debug.Log("Buffer jump");
         }
+        else if (jump.triggered && canJump)
+        {
+            Jump();
+            Debug.Log("Normal jump");
+        }
+        
         /*if (jump.WasReleasedThisFrame()&&body.velocity.y>0)
             body.velocity=new Vector2(body.velocity.x,body.velocity.y*0.5f);*/
     }
 
+    private void Jump()
+    {
+        float jumpHeight = (2 / transform.localScale.y) + jumpBoost;
+        body.AddForce(Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y) * transform.up.normalized,
+            ForceMode2D.Impulse);
+        //Debug.Log($"AddForce: {Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y)}, jumpHeight: {jumpHeight}, localScale: {transform.localScale.y}, jumpBoost: {jumpBoost}");
+        if (!coroutineIsCalled)
+            StartCoroutine(CanJump());
+        coyoteTimer = 0;
+        bufferTimer = 0;
+    }
+
     IEnumerator CanJump()
     {
+        coroutineIsCalled = true;
         canJump = false;
+        Debug.Log("NO jump");
         yield return new WaitForSeconds(0.1f);
         yield return new WaitUntil(()=>feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object")));
         canJump = true;
+        Debug.Log("YES jump");
+        coroutineIsCalled = false;
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -154,6 +185,7 @@ public class PlayerMovement1 : MonoBehaviour
     {
         if (move.IsPressed())
             body.velocity = new Vector2(moveInput.x * speed, body.velocity.y);
+        else body.velocity = new Vector2(0f, body.velocity.y);
         //body.AddForce(new Vector2(moveInput.x*speed*Time.deltaTime,0),ForceMode2D.Impulse);
         if (extraSpeed != Vector2.zero)
         {
