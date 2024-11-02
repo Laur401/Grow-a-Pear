@@ -23,6 +23,9 @@ public class PlayerMovement1 : MonoBehaviour
     [SerializeField] InputActionAsset inputActionAsset;
     [SerializeField] private float coyoteTime = 0.2f;
     [SerializeField] private float jumpBufferTime = 0.2f;
+    [SerializeField] private ParticleSystem moveParticle;
+    [SerializeField] private ParticleSystem fallParticle;
+    [SerializeField] private float dustFormationPeriod;
 
     private Rigidbody2D body;
     private CapsuleCollider2D capsule;
@@ -232,10 +235,19 @@ public class PlayerMovement1 : MonoBehaviour
         }
     }
 
+    private float timerDust=0;
     private void HandleMovement()
     {
         if (move.IsPressed())
+        {
+            timerDust += Time.deltaTime;
             body.velocity = new Vector2(moveInput.x * speed, body.velocity.y);
+            if (timerDust > dustFormationPeriod&&feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object")))
+            {
+                moveParticle.Play();
+                timerDust = 0;
+            }
+        }
         else body.velocity = new Vector2(0f, body.velocity.y);
         //body.AddForce(new Vector2(moveInput.x*speed*Time.deltaTime,0),ForceMode2D.Impulse);
         if (extraSpeed != Vector2.zero)
