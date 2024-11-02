@@ -1,8 +1,6 @@
 Need to fix:
 
-Player rotation (FlipSprite());
-Player rotation while scaling; DONE, could be done better if we have time
-Sliding boxes (increase weight/friction?);
+Jumping not working sometimes for some reason (possibly logic mistake) Possibly fixed
 LevelD camera;
 
 Need to create:

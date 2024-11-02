@@ -57,6 +57,13 @@ public class Pickup : MonoBehaviour
         return 0;
     }
 
+    public IEnumerator ObjectRemover()
+    {
+        cont = true;
+        yield return new WaitUntil(()=>pickedUp=false);
+        Destroy(gameObject);
+    }
+
    /* void PickObjUp(GameObject playerObject)
     {
         pickedUp = true;

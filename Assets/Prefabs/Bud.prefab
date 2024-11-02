@@ -111,6 +111,7 @@ MonoBehaviour:
   throwForce: 20
   inputActionAsset: {fileID: -944628639613478452, guid: 40eecd3cadf39e0f29fa83e8ebc2dc05, type: 3}
   coyoteTime: 0.5
+  jumpBufferTime: 0.2
   playerName: 0
 --- !u!114 &7564341614615437306
 MonoBehaviour:
@@ -205,7 +206,7 @@ CapsuleCollider2D:
   m_GameObject: {fileID: 1566664141462315912}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 82a0e8625f940c2ab89a6636edd134bd, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
