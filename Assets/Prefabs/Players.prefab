@@ -87,9 +87,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 5699440883660779290}
     m_Modifications:
     - target: {fileID: 4301197796038913619, guid: 9db6d6392e67b0611a4f06a3dfc09b67, type: 3}
+      propertyPath: maxSize
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4301197796038913619, guid: 9db6d6392e67b0611a4f06a3dfc09b67, type: 3}
+      propertyPath: coyoteTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4301197796038913619, guid: 9db6d6392e67b0611a4f06a3dfc09b67, type: 3}
       propertyPath: otherPlayer
       value: 
       objectReference: {fileID: 3076678042883908286}
+    - target: {fileID: 4301197796038913619, guid: 9db6d6392e67b0611a4f06a3dfc09b67, type: 3}
+      propertyPath: jumpBufferTime
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8139223541953506124, guid: 9db6d6392e67b0611a4f06a3dfc09b67, type: 3}
       propertyPath: m_Name
       value: Sprout (1)
@@ -202,9 +214,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7030434236183564798, guid: 061a7ea5fa8657380b43ae69f51b48c3, type: 3}
+      propertyPath: maxSize
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030434236183564798, guid: 061a7ea5fa8657380b43ae69f51b48c3, type: 3}
+      propertyPath: coyoteTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030434236183564798, guid: 061a7ea5fa8657380b43ae69f51b48c3, type: 3}
       propertyPath: otherPlayer
       value: 
       objectReference: {fileID: 7524255290800145536}
+    - target: {fileID: 7030434236183564798, guid: 061a7ea5fa8657380b43ae69f51b48c3, type: 3}
+      propertyPath: jumpBufferTime
+      value: 0.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -41,5 +41,11 @@ public class Dropper : MonoBehaviour, IActivator
         droppedItem=Instantiate(itemToDrop,dispensePosition,Quaternion.identity);
         dispensed = true;
     }
-    void RemoveDroppedItem() => Destroy(droppedItem);
+
+    void RemoveDroppedItem()
+    {
+        //Pickup obj=droppedItem.GetComponent<Pickup>();
+        //obj.StartCoroutine(obj.ObjectRemover());
+        Destroy(droppedItem);
+    }
 }

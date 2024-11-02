@@ -586,3 +586,5 @@ sysinfo.txt
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,rider,csharp,c++,unity
+/.idea/
+/.vscode/

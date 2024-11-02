@@ -9,12 +9,12 @@ public class CheckpointManager : MonoBehaviour
 
     void Start()
     {
-        respawnPointsScript = FindObjectOfType<Death>();
+        respawnPointsScript = GetComponent<Death>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Checkpoint"))
             respawnPointsScript.respawnPoints.Add(transform.position);
             
     }

@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5990413268433331416}
   - component: {fileID: 8125502203868266695}
   - component: {fileID: 7030434236183564798}
+  - component: {fileID: 7564341614615437306}
+  - component: {fileID: 7720095123877091461}
   - component: {fileID: 47044096866741008}
   - component: {fileID: 7971667639841652803}
   - component: {fileID: 2095740340095123076}
@@ -102,13 +104,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 6
-  jumpForce: 4
+  jumpBoost: 1
   sizeChangeFactor: 1.1
   maxSize: 2
   otherPlayer: {fileID: 0}
   throwForce: 20
   inputActionAsset: {fileID: -944628639613478452, guid: 40eecd3cadf39e0f29fa83e8ebc2dc05, type: 3}
+  coyoteTime: 0.5
+  jumpBufferTime: 0.2
   playerName: 0
+--- !u!114 &7564341614615437306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566664141462315912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d124cd6dbe9d2880d9336b466444b1df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnPoints: []
+  inputActionAsset: {fileID: -944628639613478452, guid: 40eecd3cadf39e0f29fa83e8ebc2dc05, type: 3}
+  playerName: 0
+--- !u!114 &7720095123877091461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566664141462315912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cd9b5f262c63daa58410173c64da4c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &47044096866741008
 Rigidbody2D:
   serializedVersion: 4
@@ -175,7 +206,7 @@ CapsuleCollider2D:
   m_GameObject: {fileID: 1566664141462315912}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 82a0e8625f940c2ab89a6636edd134bd, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

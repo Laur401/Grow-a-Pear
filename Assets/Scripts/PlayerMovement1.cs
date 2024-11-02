@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.VFX;
 
 //TODO: Change input keys to not hardcoded ones DONE
 //TODO: Merge movement scripts into one DONE
@@ -19,7 +21,8 @@ public class PlayerMovement1 : MonoBehaviour
     [SerializeField] private GameObject otherPlayer;
     [SerializeField] private float throwForce;
     [SerializeField] InputActionAsset inputActionAsset;
-    [SerializeField] private float coyoteTime = 0.5f;
+    [SerializeField] private float coyoteTime = 0.2f;
+    [SerializeField] private float jumpBufferTime = 0.2f;
 
     private Rigidbody2D body;
     private CapsuleCollider2D capsule;
@@ -34,8 +37,9 @@ public class PlayerMovement1 : MonoBehaviour
     private float growShrinkInput;
     private int direction;
     private float targetVelocity;
-    private float jumpTimer;
-    private bool canJump;
+    private float coyoteTimer;
+    private float bufferTimer;
+    private bool canJump=true;
 
     private Pickup heldItem;
 
@@ -64,7 +68,21 @@ public class PlayerMovement1 : MonoBehaviour
         grab = player.FindAction("Grab");
         growShrink = player.FindAction("GrowShrink");
         interact = player.FindAction("Interact");
+        jump.performed += OnJump;
+        //grab.performed += OnGrab;
+        //interact.performed += OnInteract;
+        StartCoroutine(LogDisplay());
+    }
 
+    IEnumerator LogDisplay()
+    {
+        bool bef;
+        while (true)
+        {
+            bef = jump.triggered;
+            Debug.Log($"jump.triggered: {jump.triggered}");
+            yield return new WaitUntil(() => jump.triggered != bef);
+        }
     }
 
     private void Update()
@@ -81,7 +99,7 @@ public class PlayerMovement1 : MonoBehaviour
     private void FixedUpdate()
     {
         HandleMovement();
-        OnJump(jump);
+        BufferJump(jump);
     }
 
     private void InputChecker()
@@ -93,36 +111,68 @@ public class PlayerMovement1 : MonoBehaviour
     private void OnMove(InputAction value) => moveInput = value.ReadValue<Vector2>();
     private void OnGrowShrink(InputAction value) => growShrinkInput = value.ReadValue<float>();
 
-    private void OnJump(InputAction value)
+    private bool coroutineIsCalled = false;
+    private void BufferJump(InputAction value)
     {
         if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object")))
         {
-            jumpTimer -= Time.deltaTime;
-            if (jumpTimer <= 0)
+            coyoteTimer -= Time.deltaTime;
+            bufferTimer -= Time.deltaTime;
+            if (coyoteTimer <= 0 && !coroutineIsCalled)
                 StartCoroutine(CanJump());
-            return;
         }
-        else jumpTimer = coyoteTime;
-        if (jump.triggered && jumpTimer > 0 && canJump)
+        else
         {
-            //body.velocity = new Vector2(body.velocity.x, jumpForce*(1f/transform.localScale.y));
-            float jumpHeight = (2 / transform.localScale.y) + jumpBoost;
-            body.AddForce(Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y) * transform.up.normalized,
-                ForceMode2D.Impulse);
-            Debug.Log($"AddForce: {Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y)}, jumpHeight: {jumpHeight}, localScale: {transform.localScale.y}, jumpBoost: {jumpBoost}");
-            StartCoroutine(CanJump());
-            jumpTimer = 0;
+            coyoteTimer = coyoteTime;
+            if (canJump && bufferTimer > 0)
+            {
+                Jump();
+                Debug.Log("Buffer jump");
+            }
         }
-        /*if (jump.WasReleasedThisFrame()&&body.velocity.y>0)
-            body.velocity=new Vector2(body.velocity.x,body.velocity.y*0.5f);*/
+    }
+    
+    private void OnJump(InputAction.CallbackContext obj)
+    {
+        if (!feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object")))
+        {
+            if (canJump && coyoteTimer > 0)
+            {
+                Jump();
+                Debug.Log("Coyote jump");
+                return;
+            }
+            bufferTimer = jumpBufferTime;
+        }
+        else if (canJump)
+        {
+            Jump();
+            Debug.Log("Normal jump");
+        }
+    }
+
+    private void Jump()
+    {
+        float jumpHeight = (2 / transform.localScale.y) + jumpBoost;
+        body.AddForce(Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y) * transform.up.normalized,
+            ForceMode2D.Impulse);
+        //Debug.Log($"AddForce: {Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y)}, jumpHeight: {jumpHeight}, localScale: {transform.localScale.y}, jumpBoost: {jumpBoost}");
+        if (!coroutineIsCalled)
+            StartCoroutine(CanJump());
+        coyoteTimer = 0;
+        bufferTimer = 0;
     }
 
     IEnumerator CanJump()
     {
+        coroutineIsCalled = true;
         canJump = false;
+        Debug.Log("NO jump");
         yield return new WaitForSeconds(0.1f);
         yield return new WaitUntil(()=>feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object")));
         canJump = true;
+        Debug.Log("YES jump");
+        coroutineIsCalled = false;
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -141,6 +191,38 @@ public class PlayerMovement1 : MonoBehaviour
             lever.LeverFlipHandler(interact);
     }
 
+    /*private List<Collider2D> triggerObject=new List<Collider2D>();
+    void OnTriggerEnter2D (Collider2D other)
+    {
+        triggerObject.Add(other);
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        triggerObject.Remove(other);
+    }
+
+    private void OnGrab(InputAction.CallbackContext obj)
+    {
+        Pickup pickup=triggerObject.FindLast(x=>x.GetComponent<Pickup>()==true).GetComponent<Pickup>();
+        if (pickup && pickup.PickUpHandler(grab, gameObject) == 1)
+        {
+            heldItem = pickup;
+            Debug.Log("Picked up!");
+        }
+    }
+
+    private void OnInteract(InputAction.CallbackContext obj)
+    {
+        foreach (Collider2D coll in triggerObject)
+        {
+            Lever lever = coll.GetComponent<Lever>();
+            if (lever)
+                lever.LeverFlipHandler(interact);
+        }
+    }
+    */
+
     private void ItemHolding()
     {
         if (heldItem.PickUpHandler(grab, gameObject) == 2)
@@ -154,6 +236,7 @@ public class PlayerMovement1 : MonoBehaviour
     {
         if (move.IsPressed())
             body.velocity = new Vector2(moveInput.x * speed, body.velocity.y);
+        else body.velocity = new Vector2(0f, body.velocity.y);
         //body.AddForce(new Vector2(moveInput.x*speed*Time.deltaTime,0),ForceMode2D.Impulse);
         if (extraSpeed != Vector2.zero)
         {
@@ -181,7 +264,22 @@ public class PlayerMovement1 : MonoBehaviour
     private void ChangeSize()
     {
         bool playerIsChangingSize = Mathf.Abs(growShrinkInput) > Mathf.Epsilon;
-        if (playerIsChangingSize)
+        Bounds bounds = gameObject.GetComponent<CapsuleCollider2D>().bounds;
+        Bounds boundsOther = gameObject.GetComponent<CapsuleCollider2D>().bounds;
+        //List<RaycastHit2D> colliders = new List<RaycastHit2D>();
+        //List<RaycastHit2D> collidersOther = new List<RaycastHit2D>();
+        ContactFilter2D contactFilter = new ContactFilter2D();
+        contactFilter.useLayerMask = true;
+        contactFilter.layerMask = LayerMask.GetMask("Ground");
+        //Physics2D.OverlapArea((Vector2)bounds.min+new Vector2(Mathf.Epsilon, Mathf.Epsilon), (Vector2)bounds.max * sizeChangeFactor, contactFilter, colliders);
+        bool colliders = Physics2D.Raycast(new Vector2(bounds.center.x,bounds.max.y), Vector2.up, transform.localScale.y*(sizeChangeFactor-1), LayerMask.GetMask("Ground"));
+        bool collidersOther = Physics2D.Raycast(new Vector2(boundsOther.center.x,boundsOther.max.y), Vector2.up, otherPlayer.transform.localScale.y*(sizeChangeFactor-1), LayerMask.GetMask("Ground"));
+        Debug.DrawRay(new Vector2(bounds.center.x,bounds.max.y), transform.localScale.y*(sizeChangeFactor-1)*Vector2.up, Color.red);
+        /*if (playerName==Players.Player1)
+            foreach (RaycastHit2D hit in colliders)
+                Debug.Log(hit.collider.name);
+            //Debug.Log($"{colliders[0]}, {colliders[1]}");*/
+        if (playerIsChangingSize&&!colliders&&!collidersOther)
         {
             float playerSizeX=Mathf.Clamp(Mathf.Abs(transform.localScale.x)*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(transform.localScale.x);
             float playerSizeY=Mathf.Clamp(Mathf.Abs(transform.localScale.y)*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(transform.localScale.y);
@@ -191,6 +289,7 @@ public class PlayerMovement1 : MonoBehaviour
             Vector3 otherPlayerSize = new Vector3(otherPlayerSizeX,otherPlayerSizeY,1);
             transform.localScale = playerSize;
             otherPlayer.transform.localScale = otherPlayerSize;
+            
         }
     }
 

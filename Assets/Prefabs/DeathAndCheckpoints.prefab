@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3332262313419357244}
   - component: {fileID: 1795527902074685519}
   - component: {fileID: 8720568672188122560}
-  - component: {fileID: 3959051030277184974}
   m_Layer: 0
   m_Name: Checkpoint
   m_TagString: Untagged
@@ -131,18 +130,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &3959051030277184974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 755039205985182540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cd9b5f262c63daa58410173c64da4c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2330950147318629271
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,10 +141,9 @@ GameObject:
   - component: {fileID: 1079350150538679126}
   - component: {fileID: 3330937697635483291}
   - component: {fileID: 5070016729571405604}
-  - component: {fileID: 2003176209378714146}
   m_Layer: 0
   m_Name: DeathBarrier
-  m_TagString: Untagged
+  m_TagString: Deadly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -274,19 +260,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2003176209378714146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2330950147318629271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d124cd6dbe9d2880d9336b466444b1df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  respawnPoints: []
 --- !u!1 &6639541778099230317
 GameObject:
   m_ObjectHideFlags: 0
