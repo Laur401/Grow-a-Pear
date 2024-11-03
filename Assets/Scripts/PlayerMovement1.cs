@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -72,8 +73,8 @@ public class PlayerMovement1 : MonoBehaviour
         growShrink = player.FindAction("GrowShrink");
         interact = player.FindAction("Interact");
         jump.performed += OnJump;
-        //grab.performed += OnGrab;
-        //interact.performed += OnInteract;
+        grab.performed += OnGrab;
+        interact.performed += OnInteract;
         StartCoroutine(LogDisplay());
     }
 
@@ -177,8 +178,8 @@ public class PlayerMovement1 : MonoBehaviour
         Debug.Log("YES jump");
         coroutineIsCalled = false;
     }
-
-    private void OnTriggerStay2D(Collider2D other)
+    
+    /*private void OnTriggerStay2D(Collider2D other)
     {
         Pickup pickup = other.GetComponent<Pickup>();
         Lever lever = other.GetComponent<Lever>();
@@ -190,24 +191,29 @@ public class PlayerMovement1 : MonoBehaviour
                 Debug.Log("Picked up!");
             }
         }
-        if (lever)
-            lever.LeverFlipHandler(interact);
-    }
+        
+    }*/
+    
 
-    /*private List<Collider2D> triggerObject=new List<Collider2D>();
+    private List<GameObject> triggerObject=new List<GameObject>();
     void OnTriggerEnter2D (Collider2D other)
     {
-        triggerObject.Add(other);
+        if (!triggerObject.Contains(other.gameObject))
+            triggerObject.Add(other.gameObject);
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        triggerObject.Remove(other);
+        if (triggerObject.Contains(other.gameObject))
+            triggerObject.Remove(other.gameObject);
     }
 
     private void OnGrab(InputAction.CallbackContext obj)
     {
-        Pickup pickup=triggerObject.FindLast(x=>x.GetComponent<Pickup>()==true).GetComponent<Pickup>();
+        GameObject pickupObject = triggerObject.FindLast(x => x.GetComponent<Pickup>() == true);
+        Pickup pickup = null;
+        if (pickupObject)
+            pickup=pickupObject.GetComponent<Pickup>();
         if (pickup && pickup.PickUpHandler(grab, gameObject) == 1)
         {
             heldItem = pickup;
@@ -217,14 +223,15 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void OnInteract(InputAction.CallbackContext obj)
     {
-        foreach (Collider2D coll in triggerObject)
+        foreach (GameObject coll in triggerObject.ToList())
         {
             Lever lever = coll.GetComponent<Lever>();
             if (lever)
-                lever.LeverFlipHandler(interact);
+                lever.LeverFlipHandler(obj);
         }
     }
-    */
+    
+    
 
     private void ItemHolding()
     {
@@ -277,21 +284,15 @@ public class PlayerMovement1 : MonoBehaviour
     {
         bool playerIsChangingSize = Mathf.Abs(growShrinkInput) > Mathf.Epsilon;
         Bounds bounds = gameObject.GetComponent<CapsuleCollider2D>().bounds;
-        Bounds boundsOther = gameObject.GetComponent<CapsuleCollider2D>().bounds;
-        //List<RaycastHit2D> colliders = new List<RaycastHit2D>();
-        //List<RaycastHit2D> collidersOther = new List<RaycastHit2D>();
+        Bounds boundsOther = otherPlayer.GetComponent<CapsuleCollider2D>().bounds;
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.useLayerMask = true;
         contactFilter.layerMask = LayerMask.GetMask("Ground");
-        //Physics2D.OverlapArea((Vector2)bounds.min+new Vector2(Mathf.Epsilon, Mathf.Epsilon), (Vector2)bounds.max * sizeChangeFactor, contactFilter, colliders);
+
         bool colliders = Physics2D.Raycast(new Vector2(bounds.center.x,bounds.max.y), Vector2.up, transform.localScale.y*(sizeChangeFactor-1), LayerMask.GetMask("Ground"));
         bool collidersOther = Physics2D.Raycast(new Vector2(boundsOther.center.x,boundsOther.max.y), Vector2.up, otherPlayer.transform.localScale.y*(sizeChangeFactor-1), LayerMask.GetMask("Ground"));
         Debug.DrawRay(new Vector2(bounds.center.x,bounds.max.y), transform.localScale.y*(sizeChangeFactor-1)*Vector2.up, Color.red);
-        /*if (playerName==Players.Player1)
-            foreach (RaycastHit2D hit in colliders)
-                Debug.Log(hit.collider.name);
-            //Debug.Log($"{colliders[0]}, {colliders[1]}");*/
-        if (playerIsChangingSize&&!colliders&&!collidersOther)
+        if (playerIsChangingSize&&((!colliders&&growShrinkInput>0)||(!collidersOther&&growShrinkInput<0)))
         {
             float playerSizeX=Mathf.Clamp(Mathf.Abs(transform.localScale.x)*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(transform.localScale.x);
             float playerSizeY=Mathf.Clamp(Mathf.Abs(transform.localScale.y)*Mathf.Pow(sizeChangeFactor,growShrinkInput),1/maxSize,maxSize)*Mathf.Sign(transform.localScale.y);

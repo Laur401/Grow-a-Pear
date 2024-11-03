@@ -17,15 +17,10 @@ public class Lever : MonoBehaviour
         buttonActivator = GetComponentInParent<ButtonActivator>();
     }
 
-    public void LeverFlipHandler(InputAction input)
+    public void LeverFlipHandler(InputAction.CallbackContext input)
     {
-        if (input.triggered&&!flipHappened)
-        {
+        if (input.performed)
             FlipLever();
-            flipHappened = true;
-        }
-        else if (input.WasCompletedThisFrame())
-            flipHappened = false;
     }
     
     void FlipLever()

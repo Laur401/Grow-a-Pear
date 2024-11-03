@@ -43,8 +43,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Camera1
+  - Camera2
   m_SortingLayers:
   - name: Background
     uniqueID: 32571389

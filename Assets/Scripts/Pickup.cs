@@ -34,7 +34,7 @@ public class Pickup : MonoBehaviour
 
     public int PickUpHandler(InputAction grabInput, GameObject playerObject)
     {
-        if (grabInput.triggered&&!grabHappened)
+        if (grabInput.triggered)
         {
             if (!pickedUp)
             {
@@ -52,8 +52,6 @@ public class Pickup : MonoBehaviour
                 //Debug.Log("ungrab");
             }
         }
-        else if (grabInput.WasCompletedThisFrame())
-            grabHappened = false;
         return 0;
     }
 
