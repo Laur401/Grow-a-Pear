@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6823033357336595269}
   - component: {fileID: 5635839363790430153}
   - component: {fileID: 4993772412318769154}
-  - component: {fileID: 9158967536672977487}
+  - component: {fileID: 2304852285664443627}
   m_Layer: 9
   m_Name: Conveyor
   m_TagString: Untagged
@@ -116,7 +116,7 @@ BoxCollider2D:
     serializedVersion: 2
     m_Bits: 4294967295
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
@@ -131,16 +131,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 8}
   m_EdgeRadius: 0
---- !u!114 &9158967536672977487
-MonoBehaviour:
+--- !u!252 &2304852285664443627
+SurfaceEffector2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3455527371966203200}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f263df1c02c799e6b3e455aa035f18d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 20
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 768
+  m_Speed: 1
+  m_SpeedVariation: 0
+  m_ForceScale: 0.1
+  m_UseContactForce: 0
+  m_UseFriction: 1
+  m_UseBounce: 1

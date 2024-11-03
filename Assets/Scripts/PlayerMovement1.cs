@@ -75,18 +75,6 @@ public class PlayerMovement1 : MonoBehaviour
         jump.performed += OnJump;
         grab.performed += OnGrab;
         interact.performed += OnInteract;
-        StartCoroutine(LogDisplay());
-    }
-
-    IEnumerator LogDisplay()
-    {
-        bool bef;
-        while (true)
-        {
-            bef = jump.triggered;
-            Debug.Log($"jump.triggered: {jump.triggered}");
-            yield return new WaitUntil(() => jump.triggered != bef);
-        }
     }
 
     private void Update()
@@ -95,8 +83,6 @@ public class PlayerMovement1 : MonoBehaviour
         ChangeSize();
         FlipSprite();
         DebugFunction();
-        if (heldItem)
-            ItemHolding();
         //HandleThrowing();
     }
 
@@ -178,22 +164,6 @@ public class PlayerMovement1 : MonoBehaviour
         Debug.Log("YES jump");
         coroutineIsCalled = false;
     }
-    
-    /*private void OnTriggerStay2D(Collider2D other)
-    {
-        Pickup pickup = other.GetComponent<Pickup>();
-        Lever lever = other.GetComponent<Lever>();
-        if (pickup&&!heldItem)
-        {
-            if (pickup.PickUpHandler(grab, gameObject) == 1)
-            {
-                heldItem = pickup;
-                Debug.Log("Picked up!");
-            }
-        }
-        
-    }*/
-    
 
     private List<GameObject> triggerObject=new List<GameObject>();
     void OnTriggerEnter2D (Collider2D other)
@@ -219,6 +189,11 @@ public class PlayerMovement1 : MonoBehaviour
             heldItem = pickup;
             Debug.Log("Picked up!");
         }
+        else if (heldItem && heldItem.PickUpHandler(grab, gameObject) == 2)
+        {
+            heldItem = null;
+            Debug.Log("Unpicked up!");
+        }
     }
 
     private void OnInteract(InputAction.CallbackContext obj)
@@ -228,17 +203,6 @@ public class PlayerMovement1 : MonoBehaviour
             Lever lever = coll.GetComponent<Lever>();
             if (lever)
                 lever.LeverFlipHandler(obj);
-        }
-    }
-    
-    
-
-    private void ItemHolding()
-    {
-        if (heldItem.PickUpHandler(grab, gameObject) == 2)
-        {
-            heldItem = null;
-            Debug.Log("Unpicked up!");
         }
     }
 
@@ -306,7 +270,7 @@ public class PlayerMovement1 : MonoBehaviour
         }
     }
 
-    private void Grow(GameObject player, GameObject otherPlayer)
+    /*private void Grow(GameObject player, GameObject otherPlayer)
     {
         Vector3 newScale = new Vector3(transform.localScale.x * sizeChangeFactor,
             transform.localScale.y * sizeChangeFactor, 1);
@@ -332,6 +296,7 @@ public class PlayerMovement1 : MonoBehaviour
             otherPlayer.transform.localScale = otherNewScale;
         }
     }
+    */
     
     private void DebugFunction()
     {

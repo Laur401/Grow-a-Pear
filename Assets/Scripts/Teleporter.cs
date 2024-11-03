@@ -26,11 +26,21 @@ public class Teleporter : MonoBehaviour
         if (teleportedInto||other.isTrigger) return;
         if (canTeleportPlayers&&other.gameObject.layer==LayerMask.NameToLayer("Player"))
             StartCoroutine(moveToNextTeleporter(other, false));
-        if (canTeleportObjects&&other.gameObject.layer==LayerMask.NameToLayer("Object"))
-            StartCoroutine(moveToNextTeleporter(other, true));
+        if (canTeleportObjects && other.gameObject.layer == LayerMask.NameToLayer("Object"))
+            StartCoroutine(checkIfCanBeTeleported(other, true));
     }
 
     private void OnTriggerExit2D(Collider2D other) => teleportedInto = false;
+
+    IEnumerator checkIfCanBeTeleported(Collider2D other, bool nested)
+    {
+        Pickup pickup = other.GetComponentInParent<Pickup>();
+        if (pickup)
+        {
+            yield return new WaitUntil(() => !pickup.pickedUp);
+            StartCoroutine(moveToNextTeleporter(other, nested));
+        }
+    }
 
     IEnumerator moveToNextTeleporter(Collider2D other, bool nested)
     {

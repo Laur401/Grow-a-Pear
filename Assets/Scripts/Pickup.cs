@@ -10,7 +10,7 @@ public class Pickup : MonoBehaviour
     Rigidbody2D rb;
     [SerializeField] private float followDistance = 1.0f;
     GameObject player;
-    bool pickedUp = false;
+    public bool pickedUp = false;
     bool grabHappened = false;
     bool cont = false;
 
@@ -61,6 +61,21 @@ public class Pickup : MonoBehaviour
         yield return new WaitUntil(()=>pickedUp=false);
         Destroy(gameObject);
     }
+    
+    IEnumerator PickObjUp(GameObject playerObject)
+    {
+        pickedUp = true;
+        player = playerObject;
+        rb.isKinematic = true;
+        
+        yield return new WaitUntil(() => cont);
+        cont = false;
+        
+        pickedUp = false;
+        player = null;
+        rb.isKinematic = false;
+        transform.localScale = defaultScale;
+    }
 
    /* void PickObjUp(GameObject playerObject)
     {
@@ -76,20 +91,6 @@ public class Pickup : MonoBehaviour
         rb.isKinematic = false;
         transform.localScale = defaultScale;
     }*/
-
-    IEnumerator PickObjUp(GameObject playerObject)
-    {
-        pickedUp = true;
-        player = playerObject;
-        rb.isKinematic = true;
-        
-        yield return new WaitUntil(() => cont);
-        cont = false;
-        
-        pickedUp = false;
-        player = null;
-        rb.isKinematic = false;
-        transform.localScale = defaultScale;
-    }
+   
 }
 
