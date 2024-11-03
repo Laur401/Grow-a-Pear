@@ -52,6 +52,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: PlayersOverText
+    uniqueID: 2705178739
+    locked: 0
   - name: Cover
     uniqueID: 3445420497
     locked: 0
