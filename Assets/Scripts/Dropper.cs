@@ -37,7 +37,7 @@ public class Dropper : MonoBehaviour, IActivator
 
     void Dispense()
     {   
-        Vector3 dispensePosition=new Vector3(transform.localPosition.x,transform.localPosition.y-itemToDrop.transform.localScale.y,0f);
+        Vector3 dispensePosition=new Vector3(transform.position.x,transform.position.y-itemToDrop.transform.localScale.y,0f);
         droppedItem=Instantiate(itemToDrop,dispensePosition,Quaternion.identity);
         dispensed = true;
     }
