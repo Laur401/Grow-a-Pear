@@ -5134,6 +5134,69 @@ MonoBehaviour:
   moveParticle: {fileID: 7527955547244060004}
   fallParticle: {fileID: 1462093554976391146}
   dustFormationPeriod: 0
+  movementClips:
+  - surface: 0
+    sounds:
+      stepClips:
+      - {fileID: 8300000, guid: e8864d8f7cc3b7dcca27e1fcee9051d3, type: 3}
+      - {fileID: 8300000, guid: ad68ed662c3175276b286ee4db8a92bd, type: 3}
+      - {fileID: 8300000, guid: 45d03594fbec053819d1bd9f7de212f6, type: 3}
+      - {fileID: 8300000, guid: ac7b9ceba93b9ebb3a20bfa9d70daccf, type: 3}
+      - {fileID: 8300000, guid: 9cf5e4f09d84dc9f995a76bb0b3c4811, type: 3}
+      - {fileID: 8300000, guid: e56694c6e80615ff0995c99705c823e4, type: 3}
+      - {fileID: 8300000, guid: e586e696de02f4d1d8aa4868186ee0c5, type: 3}
+      - {fileID: 8300000, guid: 6c9583644a1541229a343618a67827aa, type: 3}
+      - {fileID: 8300000, guid: b8d000e2e90e91eafb488f53d7c1f8b0, type: 3}
+      - {fileID: 8300000, guid: 2d42dc525ed21b440b28b95ba4c0486c, type: 3}
+      - {fileID: 8300000, guid: cfb432a885180374c8301de200cb1d8c, type: 3}
+      - {fileID: 8300000, guid: d427d38535204cb948dbdad3d8739d87, type: 3}
+      - {fileID: 8300000, guid: 1cd85cbc078d8a07cba09b029b43d619, type: 3}
+      - {fileID: 8300000, guid: 0d801267c353c7045ad3e78afec1e405, type: 3}
+      - {fileID: 8300000, guid: eb9f75e2d9cf32f898b69e6df9cb066f, type: 3}
+      landClips:
+      - {fileID: 8300000, guid: 9450d0781a14caf20a8752701aa52025, type: 3}
+      - {fileID: 8300000, guid: 5ea3acdb4b5c620f8a148ecd64fdf7c9, type: 3}
+      jumpClips:
+      - {fileID: 8300000, guid: 4e13b67608eec37fd84661a6419a1699, type: 3}
+      - {fileID: 8300000, guid: dcf4bb7a45df3e7b9a5d80e65f8f5baf, type: 3}
+  - surface: 1
+    sounds:
+      stepClips:
+      - {fileID: 8300000, guid: fc44f1a08074767409bb26ec05f296ab, type: 3}
+      - {fileID: 8300000, guid: eed30aa45bc62873ea9e1eced48410f1, type: 3}
+      - {fileID: 8300000, guid: e0945045ff066c0709f5d839c4e2bd68, type: 3}
+      - {fileID: 8300000, guid: 0aa48e8fadc0a6bb8b3b4e2466c521d1, type: 3}
+      - {fileID: 8300000, guid: e28a517aacc62fc4f9b68eb2863f694a, type: 3}
+      landClips:
+      - {fileID: 8300000, guid: d10ea8f4aa10faeecbc0da586bfb76c7, type: 3}
+      - {fileID: 8300000, guid: f2235f46a4dc1c2f287f4ef17016f3e5, type: 3}
+      jumpClips:
+      - {fileID: 8300000, guid: c0b68cea326d3817f9bfb591f66454a0, type: 3}
+      - {fileID: 8300000, guid: 02cd837ea2c35688ab9a42e4f28e27e6, type: 3}
+  - surface: 2
+    sounds:
+      stepClips:
+      - {fileID: 8300000, guid: 5872376f0ed75f43b97f4e16ccf6e52e, type: 3}
+      - {fileID: 8300000, guid: d033e7d8f354bf2149431e45b0110d54, type: 3}
+      - {fileID: 8300000, guid: 7e4aa493c4cc051f6a50e4cad6103d96, type: 3}
+      - {fileID: 8300000, guid: c2df2d50673679277bb382ea67f910f5, type: 3}
+      - {fileID: 8300000, guid: 72238adc7347de40e9207fbe9bace58b, type: 3}
+      - {fileID: 8300000, guid: f9eebe439f868cb5ca27878085a7d364, type: 3}
+      - {fileID: 8300000, guid: 61bf9cd26f1de5533aa2a7efe8068335, type: 3}
+      - {fileID: 8300000, guid: 4b03b413a068952f095895dd5e2b5fd4, type: 3}
+      - {fileID: 8300000, guid: f75e355290e540b1cbf226a0f86d0eae, type: 3}
+      - {fileID: 8300000, guid: 1bea2205aa64fe964ab9be2789f635e9, type: 3}
+      - {fileID: 8300000, guid: 5cd014bd11ad888cf9c4296eab0d8b3e, type: 3}
+      - {fileID: 8300000, guid: d26c440366ac29ebf99961ac7adbe0fe, type: 3}
+      - {fileID: 8300000, guid: 5cb7d69f47f5481dab8f62facbb8f553, type: 3}
+      - {fileID: 8300000, guid: 18d6e77a5e9f2f459ae3f8ccf6e44450, type: 3}
+      - {fileID: 8300000, guid: 3293201573fdcf297b5c7372880c7200, type: 3}
+      landClips:
+      - {fileID: 8300000, guid: bf5652cf42b89bf4e944074fea5f0dc4, type: 3}
+      - {fileID: 8300000, guid: 27b4d0b9c931e681bb0fc4e69550af5a, type: 3}
+      jumpClips:
+      - {fileID: 8300000, guid: e8a2ca04bc04dd43a952a5da9b397439, type: 3}
+      - {fileID: 8300000, guid: 5032e92b586fb9c69bc7590190ff0efb, type: 3}
   playerName: 1
 --- !u!114 &2893701813941247885
 MonoBehaviour:

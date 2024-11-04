@@ -32,19 +32,19 @@ public class PlayerMovement1 : MonoBehaviour
     
     [Serializable] public struct MovementSounds
     {
-        [SerializeField] private string surface; //redo so surface is a key value pair
-        [SerializeField] private Sounds sounds;
+        [SerializeField] internal Surfaces surface;
+        [SerializeField] internal Sounds sounds;
     }
 
-    [Serializable]
-    public struct Sounds
+    [Serializable] public struct Sounds
     {
-        [SerializeField] private List<AudioClip> stepClips;
-        [SerializeField] private List<AudioClip> landClips;
-        [SerializeField] private List<AudioClip> jumpClips;
+        [SerializeField] internal List<AudioClip> stepClips;
+        [SerializeField] internal List<AudioClip> landClips;
+        [SerializeField] internal List<AudioClip> jumpClips;
     }
-    
-    enum Surfaces { Ground, Player, Object };
+
+    internal enum Surfaces { Ground, Player, Object, Null };
+    internal enum Actions { Step, Land, Jump };
     
     private Rigidbody2D body;
     private CapsuleCollider2D capsule;
@@ -169,7 +169,7 @@ public class PlayerMovement1 : MonoBehaviour
         float jumpHeight = (2 / transform.localScale.y) + jumpBoost;
         body.AddForce(Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y) * transform.up.normalized,
             ForceMode2D.Impulse);
-        //audioSource.PlayOneShot(jumpSound[randomizer.Next(jumpSound.Count)]);
+        PlayStepSFX(Actions.Jump);
         //Debug.Log($"AddForce: {Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y)}, jumpHeight: {jumpHeight}, localScale: {transform.localScale.y}, jumpBoost: {jumpBoost}");
         if (!coroutineIsCalled)
             StartCoroutine(CanJump());
@@ -185,7 +185,7 @@ public class PlayerMovement1 : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         yield return new WaitUntil(()=>feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object")));
         fallParticle.Play();
-        //audioSource.PlayOneShot(landSound[randomizer.Next(landSound.Count)]);
+        PlayStepSFX(Actions.Land);
         canJump = true;
         Debug.Log("YES jump");
         coroutineIsCalled = false;
@@ -235,6 +235,8 @@ public class PlayerMovement1 : MonoBehaviour
     
     
     private float timerDust=0;
+    private int particlesPerSFX = 3;
+    private int timerParticles = 0;
     private void HandleMovement()
     {
         if (move.IsPressed())
@@ -244,8 +246,13 @@ public class PlayerMovement1 : MonoBehaviour
             if (timerDust > dustFormationPeriod&&feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object")))
             {
                 moveParticle.Play();
-                //audioSource.PlayOneShot(stepSound[randomizer.Next(stepSound.Count)]);
                 timerDust = 0;
+                timerParticles++;
+                if (timerParticles == particlesPerSFX)
+                {
+                    PlayStepSFX(Actions.Step);
+                    timerParticles = 0;
+                }
             }
         }
         else body.velocity = Vector2.MoveTowards(body.velocity,new Vector2(0f, body.velocity.y),1.2f);
@@ -290,11 +297,31 @@ public class PlayerMovement1 : MonoBehaviour
         }
     }
     
-    private void PlayStepSFX(List<AudioClip> x)
+    private void PlayStepSFX(Actions action)
     {
-        feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object"));
+        Surfaces surface;
+        List<AudioClip> playSFX;
+        
         if (feet.IsTouchingLayers(LayerMask.GetMask("Ground")))
-            audioSource.PlayOneShot(x[randomizer.Next(x.Count)]);
+            surface=Surfaces.Ground;
+        else if (feet.IsTouchingLayers(LayerMask.GetMask("Player")))
+            surface=Surfaces.Player;
+        else if (feet.IsTouchingLayers(LayerMask.GetMask("Object")))
+            surface = Surfaces.Object;
+        else surface = Surfaces.Null;
+        
+        if (surface == Surfaces.Null) return;
+        
+        if (action == Actions.Step)
+            playSFX = movementClips.Find(y => y.surface == Surfaces.Ground).sounds.stepClips;
+        else if (action == Actions.Jump)
+            playSFX = movementClips.Find(y => y.surface == Surfaces.Ground).sounds.jumpClips;
+        else if (action == Actions.Land)
+            playSFX = movementClips.Find(y => y.surface == Surfaces.Ground).sounds.landClips;
+        else playSFX = null;
+        
+        if (playSFX!=null)
+            audioSource.PlayOneShot(playSFX[randomizer.Next(playSFX.Count)]);
     }
 
     /*private void Grow(GameObject player, GameObject otherPlayer)
