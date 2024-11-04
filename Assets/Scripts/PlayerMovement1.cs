@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.VFX;
+using Random = System.Random;
 
 //TODO: Change input keys to not hardcoded ones DONE
 //TODO: Merge movement scripts into one DONE
@@ -27,7 +28,24 @@ public class PlayerMovement1 : MonoBehaviour
     [SerializeField] private ParticleSystem moveParticle;
     [SerializeField] private ParticleSystem fallParticle;
     [SerializeField] private float dustFormationPeriod;
+    [SerializeField] private List<MovementSounds> movementClips;
+    
+    [Serializable] public struct MovementSounds
+    {
+        [SerializeField] private string surface; //redo so surface is a key value pair
+        [SerializeField] private Sounds sounds;
+    }
 
+    [Serializable]
+    public struct Sounds
+    {
+        [SerializeField] private List<AudioClip> stepClips;
+        [SerializeField] private List<AudioClip> landClips;
+        [SerializeField] private List<AudioClip> jumpClips;
+    }
+    
+    enum Surfaces { Ground, Player, Object };
+    
     private Rigidbody2D body;
     private CapsuleCollider2D capsule;
     private BoxCollider2D feet;
@@ -57,6 +75,10 @@ public class PlayerMovement1 : MonoBehaviour
     private InputAction interact;
 
     [NonSerialized] public Vector2 extraSpeed = new Vector2(0, 0);
+    
+    private AudioSource audioSource;
+    
+    private Random randomizer = new Random();
 
     private void Start()
     {
@@ -75,6 +97,7 @@ public class PlayerMovement1 : MonoBehaviour
         jump.performed += OnJump;
         grab.performed += OnGrab;
         interact.performed += OnInteract;
+        audioSource = GetComponentInChildren<AudioSource>();
     }
 
     private void Update()
@@ -146,6 +169,7 @@ public class PlayerMovement1 : MonoBehaviour
         float jumpHeight = (2 / transform.localScale.y) + jumpBoost;
         body.AddForce(Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y) * transform.up.normalized,
             ForceMode2D.Impulse);
+        //audioSource.PlayOneShot(jumpSound[randomizer.Next(jumpSound.Count)]);
         //Debug.Log($"AddForce: {Mathf.Sqrt(jumpHeight * -2 * Physics2D.gravity.y)}, jumpHeight: {jumpHeight}, localScale: {transform.localScale.y}, jumpBoost: {jumpBoost}");
         if (!coroutineIsCalled)
             StartCoroutine(CanJump());
@@ -160,6 +184,8 @@ public class PlayerMovement1 : MonoBehaviour
         Debug.Log("NO jump");
         yield return new WaitForSeconds(0.1f);
         yield return new WaitUntil(()=>feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object")));
+        fallParticle.Play();
+        //audioSource.PlayOneShot(landSound[randomizer.Next(landSound.Count)]);
         canJump = true;
         Debug.Log("YES jump");
         coroutineIsCalled = false;
@@ -206,6 +232,8 @@ public class PlayerMovement1 : MonoBehaviour
         }
     }
 
+    
+    
     private float timerDust=0;
     private void HandleMovement()
     {
@@ -216,19 +244,11 @@ public class PlayerMovement1 : MonoBehaviour
             if (timerDust > dustFormationPeriod&&feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object")))
             {
                 moveParticle.Play();
+                //audioSource.PlayOneShot(stepSound[randomizer.Next(stepSound.Count)]);
                 timerDust = 0;
             }
         }
-        else body.velocity = new Vector2(0f, body.velocity.y);
-        //body.AddForce(new Vector2(moveInput.x*speed*Time.deltaTime,0),ForceMode2D.Impulse);
-        if (extraSpeed != Vector2.zero)
-        {
-            //body.velocity += extraSpeed;
-            body.AddForce(extraSpeed,ForceMode2D.Force);
-            extraSpeed = Vector2.zero;
-        }
-        else if (feet.IsTouchingLayers(LayerMask.GetMask("Ground","Player","Object")))
-            body.velocity=Vector2.MoveTowards(body.velocity,Vector2.zero,1.2f);
+        else body.velocity = Vector2.MoveTowards(body.velocity,new Vector2(0f, body.velocity.y),1.2f);
         
         // Set animator parameters
         //anim.SetBool("run", horizontalInput != 0);
@@ -268,6 +288,13 @@ public class PlayerMovement1 : MonoBehaviour
             otherPlayer.transform.localScale = otherPlayerSize;
             
         }
+    }
+    
+    private void PlayStepSFX(List<AudioClip> x)
+    {
+        feet.IsTouchingLayers(LayerMask.GetMask("Ground", "Player", "Object"));
+        if (feet.IsTouchingLayers(LayerMask.GetMask("Ground")))
+            audioSource.PlayOneShot(x[randomizer.Next(x.Count)]);
     }
 
     /*private void Grow(GameObject player, GameObject otherPlayer)
@@ -362,3 +389,4 @@ public class PlayerMovement1 : MonoBehaviour
         Debug.Log($"{thrower.name} threw {thrown.name} with force: {throwVelocity}");
     }
 }*/
+
