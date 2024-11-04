@@ -828,7 +828,7 @@ Transform:
   m_GameObject: {fileID: 262045769}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.009928, y: -10.427979, z: -10}
+  m_LocalPosition: {x: -16.00639, y: -10.427979, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1743,7 +1743,7 @@ Transform:
   m_GameObject: {fileID: 703073399}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.009926, y: -10.427979, z: -10}
+  m_LocalPosition: {x: 5.0063877, y: -10.427979, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -54890,10 +54890,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2535313805035569567, guid: 93de2b79874b348038073cb4584ea416, type: 3}
-      propertyPath: dustFormationPeriod
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 3649823054290032125, guid: 93de2b79874b348038073cb4584ea416, type: 3}
       propertyPath: FloorDistance
       value: 5
@@ -54941,14 +54937,6 @@ PrefabInstance:
     - target: {fileID: 6400900849106205833, guid: 93de2b79874b348038073cb4584ea416, type: 3}
       propertyPath: m_Name
       value: Players
-      objectReference: {fileID: 0}
-    - target: {fileID: 6818019295836344520, guid: 93de2b79874b348038073cb4584ea416, type: 3}
-      propertyPath: movementClips.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6818019295836344520, guid: 93de2b79874b348038073cb4584ea416, type: 3}
-      propertyPath: movementClips.Array.data[0].sounds.Array.size
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7905332247486548546, guid: 93de2b79874b348038073cb4584ea416, type: 3}
       propertyPath: m_LocalPosition.x

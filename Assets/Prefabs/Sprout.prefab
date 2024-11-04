@@ -5133,7 +5133,7 @@ MonoBehaviour:
   jumpBufferTime: 0.2
   moveParticle: {fileID: 7527955547244060004}
   fallParticle: {fileID: 1462093554976391146}
-  dustFormationPeriod: 0
+  dustFormationPeriod: 0.1
   movementClips:
   - surface: 0
     sounds:
