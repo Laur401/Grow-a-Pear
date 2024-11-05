@@ -248,7 +248,7 @@ public class PlayerMovement1 : MonoBehaviour
                 moveParticle.Play();
                 timerDust = 0;
                 timerParticles++;
-                if (timerParticles == particlesPerSFX)
+                if (timerParticles >= particlesPerSFX)
                 {
                     PlayStepSFX(Actions.Step);
                     timerParticles = 0;
