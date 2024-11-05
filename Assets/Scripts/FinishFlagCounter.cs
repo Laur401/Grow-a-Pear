@@ -13,12 +13,12 @@ public class FinishFlagCounter : MonoBehaviour
     void OnTriggerEnter2D (Collider2D other)
     {
         if (other.CompareTag("Player"))
-            levelFinishScript.playerCountAtFinish++;
+            levelFinishScript.AddPlayer(other.gameObject);
     }
     
     void OnTriggerExit2D (Collider2D other)
     {
         if (other.CompareTag("Player"))
-            levelFinishScript.playerCountAtFinish--;
+            levelFinishScript.RemovePlayer(other.gameObject);
     }
 }
