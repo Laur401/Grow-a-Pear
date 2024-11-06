@@ -122,6 +122,21 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!115 &7165874
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 7
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_Type: 0
+  m_ExecutionOrder: 0
+  m_ClassName: InputSystemUIInputModule
+  m_Namespace: UnityEngine.InputSystem.UI
+  m_AssemblyName: Unity.InputSystem
 --- !u!1 &203700292
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +366,7 @@ GameObject:
   m_Component:
   - component: {fileID: 478922939}
   - component: {fileID: 478922938}
-  - component: {fileID: 478922940}
+  - component: {fileID: 478922941}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -371,7 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1211275712}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &478922939
@@ -389,7 +404,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &478922940
+--- !u!114 &478922941
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -398,7 +413,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 478922936}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Script: {fileID: 7165874}
   m_Name: 
   m_EditorClassIdentifier: 
   m_SendPointerHoverToParent: 1
@@ -502,7 +517,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2114485037}
+      - m_Target: {fileID: 2114485036}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
@@ -775,7 +790,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2114485037}
+      - m_Target: {fileID: 2114485036}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 1
@@ -1094,8 +1109,6 @@ GameObject:
   - component: {fileID: 2114485034}
   - component: {fileID: 2114485033}
   - component: {fileID: 2114485036}
-  - component: {fileID: 2114485038}
-  - component: {fileID: 2114485037}
   - component: {fileID: 2114485039}
   m_Layer: 0
   m_Name: Main Camera
@@ -1188,30 +1201,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8ee052c1e15d23438ce48fdbb720dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2114485037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114485032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8ee052c1e15d23438ce48fdbb720dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2114485038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114485032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 645c6e85149856243b301f6e6e86db72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2114485039
