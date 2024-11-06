@@ -304,10 +304,10 @@ public class PlayerMovement1 : MonoBehaviour
         
         if (feet.IsTouchingLayers(LayerMask.GetMask("Ground")))
             surface=Surfaces.Ground;
-        else if (feet.IsTouchingLayers(LayerMask.GetMask("Player")))
-            surface=Surfaces.Player;
         else if (feet.IsTouchingLayers(LayerMask.GetMask("Object")))
             surface = Surfaces.Object;
+        else if (feet.IsTouchingLayers(LayerMask.GetMask("Player")))
+            surface=Surfaces.Player;
         else surface = Surfaces.Null;
         
         if (surface == Surfaces.Null) return;
