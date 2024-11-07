@@ -30,7 +30,11 @@ public class Teleporter : MonoBehaviour
             StartCoroutine(checkIfCanBeTeleported(other, true));
     }
 
-    private void OnTriggerExit2D(Collider2D other) => teleportedInto = false;
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        teleportedInto = false;
+        StopAllCoroutines();
+    }
 
     IEnumerator checkIfCanBeTeleported(Collider2D other, bool nested)
     {

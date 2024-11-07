@@ -19,8 +19,7 @@ public class Lever : MonoBehaviour
 
     public void LeverFlipHandler(InputAction.CallbackContext input)
     {
-        if (input.performed)
-            FlipLever();
+        FlipLever();
     }
     
     void FlipLever()

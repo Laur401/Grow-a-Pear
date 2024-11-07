@@ -87,7 +87,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 595970e1ba493bd54b2adec9a501f2ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followDistance: 1
+  followDistance: 0.4
+  pickedUp: 0
 --- !u!61 &6578094302148307190
 BoxCollider2D:
   m_ObjectHideFlags: 0

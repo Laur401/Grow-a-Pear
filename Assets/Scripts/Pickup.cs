@@ -26,9 +26,11 @@ public class Pickup : MonoBehaviour
     {
         if (pickedUp)
         {
-            transform.position=player.transform.position+followDistance * player.transform.localScale.x * player.transform.right;
+            transform.position=player.transform.position + (followDistance * player.transform.localScale.x + transform.localScale.x) * player.transform.right;
             transform.rotation=player.transform.rotation;
-            transform.localScale = player.transform.localScale;
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x) * Mathf.Sign(player.transform.localScale.x);
+            transform.localScale = scale;
         }
     }
 

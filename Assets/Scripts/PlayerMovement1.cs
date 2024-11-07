@@ -96,7 +96,7 @@ public class PlayerMovement1 : MonoBehaviour
         interact = player.FindAction("Interact");
         jump.performed += OnJump;
         grab.performed += OnGrab;
-        interact.performed += OnInteract;
+        interact.started += OnInteract;
         audioSource = GetComponentInChildren<AudioSource>();
     }
 
