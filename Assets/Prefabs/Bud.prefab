@@ -4899,12 +4899,12 @@ GameObject:
   - component: {fileID: 5990413268433331416}
   - component: {fileID: 8125502203868266695}
   - component: {fileID: 7030434236183564798}
-  - component: {fileID: 7564341614615437306}
   - component: {fileID: 7720095123877091461}
   - component: {fileID: 47044096866741008}
   - component: {fileID: 7971667639841652803}
   - component: {fileID: 2095740340095123076}
   - component: {fileID: 2101112066881311647}
+  - component: {fileID: 1345166581334815345}
   m_Layer: 8
   m_Name: Bud
   m_TagString: Player
@@ -5070,21 +5070,6 @@ MonoBehaviour:
       - {fileID: 8300000, guid: e8a2ca04bc04dd43a952a5da9b397439, type: 3}
       - {fileID: 8300000, guid: 5032e92b586fb9c69bc7590190ff0efb, type: 3}
   playerName: 0
---- !u!114 &7564341614615437306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1566664141462315912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d124cd6dbe9d2880d9336b466444b1df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  respawnPoints: []
-  inputActionAsset: {fileID: -944628639613478452, guid: 40eecd3cadf39e0f29fa83e8ebc2dc05, type: 3}
-  playerName: 0
 --- !u!114 &7720095123877091461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5234,6 +5219,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6004143, y: 0.11667639}
   m_EdgeRadius: 0
+--- !u!114 &1345166581334815345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566664141462315912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe670c3553012af1b0d4eb4b7b58f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1976882053614300749
 GameObject:
   m_ObjectHideFlags: 0

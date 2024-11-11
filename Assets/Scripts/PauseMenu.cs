@@ -52,9 +52,14 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(true);
         EventSystem.current.SetSelectedGameObject(mainMenuDefaultSelect);
+        SuspendGameState();
+    }
+
+    public void SuspendGameState()
+    {
         foreach (GameObject player in players)
             EnableDisablePlayers(false);
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
         isPaused = true;
     }
 
@@ -79,6 +84,11 @@ public class PauseMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

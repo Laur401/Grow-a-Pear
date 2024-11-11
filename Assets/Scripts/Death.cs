@@ -1,75 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 
 public class Death : MonoBehaviour
 {
-    public List<Vector3> respawnPoints=new List<Vector3>();
-    private GameObject[] players;
-    
-    [SerializeField] InputActionAsset inputActionAsset;
-    enum Players { Player1, Player2 };
-    [SerializeField] Players playerName;
-    private InputActionMap player;
-    private InputAction respawn;
-
-    private bool canRespawn = true;
-    
-    HealthUI healthUI;
-    
+    private DeathManager deathManager;
     private void Start()
     {
-        respawnPoints.Add(transform.position);
-        inputActionAsset.Enable();
-        player = inputActionAsset.FindActionMap($"{playerName.ToString()}");
-        respawn = player.FindAction("Respawn");
-        
-        healthUI = FindFirstObjectByType<HealthUI>();
+        deathManager = GetComponentInParent<DeathManager>();
     }
 
-    private void Update()
-    {
-        OnRespawn(respawn);
-    }
-
-    void OnRespawn(InputAction value)
-    {
-        if (value.triggered&&canRespawn)
-        {
-            StartCoroutine(RespawnPlayer());
-        }
-    }
-
-    private bool alreadyRunning;
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Deadly")&&!alreadyRunning)
+        if (other.CompareTag("Deadly")&&!deathManager.alreadyRunning)
         {
-            StartCoroutine(KillPlayer());
+            StartCoroutine(deathManager.KillPlayer());
         }
-    }
-    
-    IEnumerator KillPlayer()
-    {
-        alreadyRunning = true;
-        gameObject.SetActive(false);
-        healthUI.RemoveLife();
-        yield return new WaitForSeconds(0.1f);
-        alreadyRunning = false;
-        //canRespawn=true; //Do we want them to respawn only after death?
-    }
-
-    private IEnumerator RespawnPlayer()
-    {
-        gameObject.SetActive(true);
-        transform.position = respawnPoints.Last();
-        canRespawn = false;
-        yield return new WaitForSeconds(0.5f);
-        canRespawn = true;
     }
 }

@@ -17,9 +17,11 @@ public class HealthUI : MonoBehaviour
         healthText=GetComponent<TextMeshProUGUI>();
         FetchHealth();
     }
-
-    private void Update()
+    
+    private void UpdateText()
     {
+        if (currentHealth <= 0)
+            FindFirstObjectByType<FailMenu>().CallFailMenu();
         healthText.text = currentHealth.ToString();
     }
 
@@ -28,14 +30,25 @@ public class HealthUI : MonoBehaviour
         FetchHealth();
     }
 
-    public void RemoveLife() => currentHealth--;
+    public void RemoveLife()
+    {
+        currentHealth--;
+        UpdateText();
+    }
 
-    public void AddLife() => currentHealth++;
+    public void AddLife()
+    {
+        currentHealth++;
+        UpdateText();
+    }
 
     private void FetchHealth()
     {
         Variables localVariables = FindFirstObjectByType<Variables>();
         levelHealth = localVariables.playerLives;
         currentHealth = levelHealth;
+        UpdateText();
     }
+
+    
 }

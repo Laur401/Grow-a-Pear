@@ -5027,12 +5027,12 @@ GameObject:
   - component: {fileID: 8442757441078027662}
   - component: {fileID: 7691699484997077309}
   - component: {fileID: 4301197796038913619}
-  - component: {fileID: 2893701813941247885}
   - component: {fileID: 4571573681190855982}
   - component: {fileID: 865550564775475899}
   - component: {fileID: 5502595602098882869}
   - component: {fileID: 3931119807236343716}
   - component: {fileID: 5431553988604653938}
+  - component: {fileID: 5318692971344646380}
   m_Layer: 8
   m_Name: Sprout
   m_TagString: Player
@@ -5198,21 +5198,6 @@ MonoBehaviour:
       - {fileID: 8300000, guid: e8a2ca04bc04dd43a952a5da9b397439, type: 3}
       - {fileID: 8300000, guid: 5032e92b586fb9c69bc7590190ff0efb, type: 3}
   playerName: 1
---- !u!114 &2893701813941247885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8139223541953506124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d124cd6dbe9d2880d9336b466444b1df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  respawnPoints: []
-  inputActionAsset: {fileID: -944628639613478452, guid: 40eecd3cadf39e0f29fa83e8ebc2dc05, type: 3}
-  playerName: 1
 --- !u!114 &4571573681190855982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5362,6 +5347,18 @@ MonoBehaviour:
   m_DefaultActionMap: Player1
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &5318692971344646380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8139223541953506124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe670c3553012af1b0d4eb4b7b58f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8980152120244541644
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class CheckpointManager : MonoBehaviour
 {
-    private Death respawnPointsScript;
+    private DeathManager respawnPointsScript;
 
     void Start()
     {
-        respawnPointsScript = GetComponent<Death>();
+        respawnPointsScript = GetComponentInParent<DeathManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
