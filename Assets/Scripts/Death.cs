@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class Death : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class Death : MonoBehaviour
 
     private bool canRespawn = true;
     
-    private int livesLeft; //replace with connection to UI later
+    HealthUI healthUI;
     
     private void Start()
     {
@@ -27,6 +28,8 @@ public class Death : MonoBehaviour
         inputActionAsset.Enable();
         player = inputActionAsset.FindActionMap($"{playerName.ToString()}");
         respawn = player.FindAction("Respawn");
+        
+        healthUI = FindFirstObjectByType<HealthUI>();
     }
 
     private void Update()
@@ -42,18 +45,22 @@ public class Death : MonoBehaviour
         }
     }
 
+    private bool alreadyRunning;
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Deadly"))
+        if (other.CompareTag("Deadly")&&!alreadyRunning)
         {
-            KillPlayer();
-            livesLeft--; //TODO: Replace with connection to UI later
+            StartCoroutine(KillPlayer());
         }
     }
-
-    private void KillPlayer()
+    
+    IEnumerator KillPlayer()
     {
+        alreadyRunning = true;
         gameObject.SetActive(false);
+        healthUI.RemoveLife();
+        yield return new WaitForSeconds(0.1f);
+        alreadyRunning = false;
         //canRespawn=true; //Do we want them to respawn only after death?
     }
 
