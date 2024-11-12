@@ -21,7 +21,7 @@ public class HealthUI : MonoBehaviour
     private void UpdateText()
     {
         if (currentHealth <= 0)
-            FindFirstObjectByType<FailMenu>().CallFailMenu();
+            StartCoroutine(FindFirstObjectByType<FailMenu>().CallFailMenu());
         healthText.text = currentHealth.ToString();
     }
 

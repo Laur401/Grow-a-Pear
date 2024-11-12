@@ -100,6 +100,20 @@ public class PlayerMovement1 : MonoBehaviour
         audioSource = GetComponentInChildren<AudioSource>();
     }
 
+    public void DisableScript()
+    {
+        jump.performed -= OnJump;
+        grab.performed -= OnGrab;
+        interact.started -= OnInteract;
+    }
+
+    public void EnableScript()
+    {
+        jump.performed += OnJump;
+        grab.performed += OnGrab;
+        interact.started += OnInteract;
+    }
+
     private void Update()
     {
         InputChecker();

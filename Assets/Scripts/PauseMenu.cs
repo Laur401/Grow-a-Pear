@@ -57,8 +57,7 @@ public class PauseMenu : MonoBehaviour
 
     public void SuspendGameState()
     {
-        foreach (GameObject player in players)
-            EnableDisablePlayers(false);
+        EnableDisablePlayers(false);
         //Time.timeScale = 0f;
         isPaused = true;
     }
@@ -67,8 +66,7 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         EventSystem.current.SetSelectedGameObject(null);
-        foreach (GameObject player in players)
-            EnableDisablePlayers(true);
+        EnableDisablePlayers(true);
         Time.timeScale = 1f;
         isPaused = false;
     }
@@ -99,7 +97,7 @@ public class PauseMenu : MonoBehaviour
 
     void FetchPlayers()
     {
-        PlayerMovement1[] playersFind=FindObjectsByType<PlayerMovement1>(FindObjectsSortMode.None);
+        PlayerMovement1[] playersFind = FindObjectsByType<PlayerMovement1>(FindObjectsSortMode.None);
         foreach (PlayerMovement1 p in playersFind)
             players.Add(p.gameObject);
     }
@@ -108,6 +106,9 @@ public class PauseMenu : MonoBehaviour
     {
         foreach (GameObject p in players)
         {
+            if (value)
+                p.GetComponent<PlayerMovement1>().EnableScript();
+            else p.GetComponent<PlayerMovement1>().DisableScript();
             p.GetComponent<PlayerMovement1>().enabled = value;
             //...add other scripts if needed later
         }

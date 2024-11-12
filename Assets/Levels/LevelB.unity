@@ -4188,7 +4188,7 @@ GameObject:
   - component: {fileID: 627310206}
   - component: {fileID: 627310208}
   - component: {fileID: 627310207}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SmallerForeground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
