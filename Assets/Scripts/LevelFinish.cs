@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
+using UnityEngine.UI;
 
 public class LevelFinish : MonoBehaviour
 {
     [SerializeField] private AudioClip victorySound;
-    [SerializeField] private AudioClip failureSound; //TODO: Add failure
+    [SerializeField] private Image transitionImage;
     private AudioSource audioSource;
     private HashSet<GameObject> players = new HashSet<GameObject>();
     void Awake() => SceneManager.sceneLoaded+=OnSceneLoaded;
@@ -28,8 +30,10 @@ public class LevelFinish : MonoBehaviour
         isRunning = true;
         SimpleAudioManager.Manager.instance.StopSong(0.2f);
         audioSource.PlayOneShot(victorySound);
-        yield return new WaitForSeconds(3.0f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //replace with next level GUI
+        Tween transition = transitionImage.DOFade(1f, 2f).SetDelay(1f).SetEase(Ease.OutSine);
+        yield return transition.WaitForCompletion();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);//replace with next level GUI
+        transitionImage.DOFade(0f, 2f).SetDelay(0.5f).SetEase(Ease.InSine);
         isRunning = false;
     }
     
