@@ -138,6 +138,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.31
       objectReference: {fileID: 0}
+    - target: {fileID: 4255784218091891652, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4848362318609321027, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
       propertyPath: m_Name
       value: Extender (1)
@@ -1977,6 +1981,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.31
       objectReference: {fileID: 0}
+    - target: {fileID: 4255784218091891652, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4848362318609321027, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
       propertyPath: m_Name
       value: Extender (1)
@@ -3198,7 +3206,7 @@ Transform:
   m_GameObject: {fileID: 1125696706}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.308587, y: -17.88, z: -10}
+  m_LocalPosition: {x: 9.310424, y: -17.88, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3487,7 +3495,7 @@ Transform:
   m_GameObject: {fileID: 1286941751}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.01112, y: -19.472542, z: -10}
+  m_LocalPosition: {x: 16.75412, y: -19.659542, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11146,7 +11154,7 @@ Transform:
   m_GameObject: {fileID: 1444937111}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.2580614, y: -2.92584, z: -10}
+  m_LocalPosition: {x: -3.2598972, y: -2.92584, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30742,6 +30750,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.5609757
       objectReference: {fileID: 0}
+    - target: {fileID: 4255784218091891652, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4848362318609321027, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
       propertyPath: m_Name
       value: Extender
@@ -31066,6 +31078,10 @@ PrefabInstance:
     - target: {fileID: 4062716162018920507, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
       propertyPath: m_Color.r
       value: 0.9098039
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255784218091891652, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4848362318609321027, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
       propertyPath: m_Name

@@ -12596,6 +12596,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 4255784218091891652, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255784218091891652, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
+      value: -0.004
+      objectReference: {fileID: 0}
     - target: {fileID: 4848362318609321027, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
       propertyPath: m_Name
       value: Extender
@@ -14442,6 +14450,14 @@ PrefabInstance:
     - target: {fileID: 4251364593062926814, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
       propertyPath: m_TagString
       value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255784218091891652, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255784218091891652, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
+      value: -0.004
       objectReference: {fileID: 0}
     - target: {fileID: 4848362318609321027, guid: 23773ca0ddbfdae3296386295d2968cb, type: 3}
       propertyPath: m_Name
