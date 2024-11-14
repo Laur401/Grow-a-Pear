@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.InputSystem;  
 using UnityEngine.Rendering;
 
 public class DeathManager : MonoBehaviour
@@ -41,7 +41,7 @@ public class DeathManager : MonoBehaviour
 
     void OnRespawn(InputAction value)
     {
-        if (value.triggered&&canRespawn)
+        if (value.triggered&&canRespawn&&!playerObject.activeSelf)
         {
             StartCoroutine(RespawnPlayer());
         }

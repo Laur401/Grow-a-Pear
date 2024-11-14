@@ -294,8 +294,8 @@ public class PlayerMovement1 : MonoBehaviour
         contactFilter.useLayerMask = true;
         contactFilter.layerMask = LayerMask.GetMask("Ground");
 
-        bool colliders = Physics2D.Raycast(new Vector2(bounds.center.x,bounds.max.y), Vector2.up, transform.localScale.y*(sizeChangeFactor-1), LayerMask.GetMask("Ground"));
-        bool collidersOther = Physics2D.Raycast(new Vector2(boundsOther.center.x,boundsOther.max.y), Vector2.up, otherPlayer.transform.localScale.y*(sizeChangeFactor-1), LayerMask.GetMask("Ground"));
+        bool colliders = Physics2D.Raycast(new Vector2(bounds.center.x,bounds.max.y), Vector2.up, transform.localScale.y*(sizeChangeFactor-1), LayerMask.GetMask("Ground", "Object"));
+        bool collidersOther = Physics2D.Raycast(new Vector2(boundsOther.center.x,boundsOther.max.y), Vector2.up, otherPlayer.transform.localScale.y*(sizeChangeFactor-1), LayerMask.GetMask("Ground", "Object"));
         Debug.DrawRay(new Vector2(bounds.center.x,bounds.max.y), transform.localScale.y*(sizeChangeFactor-1)*Vector2.up, Color.red);
         if (playerIsChangingSize&&((!colliders&&growShrinkInput>0)||(!collidersOther&&growShrinkInput<0)))
         {
