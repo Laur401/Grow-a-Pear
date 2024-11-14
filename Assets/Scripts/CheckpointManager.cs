@@ -15,7 +15,7 @@ public class CheckpointManager : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Checkpoint"))
-            respawnPointsScript.respawnPoints.Add(transform.position);
+            respawnPointsScript.respawnPoints.Add(other.transform.position);
             
     }
 }

@@ -61,7 +61,7 @@ public class PlayerMovement1 : MonoBehaviour
     private float targetVelocity;
     private float coyoteTimer;
     private float bufferTimer;
-    private bool canJump=true;
+    [NonSerialized] public bool canJump=true;
 
     private Pickup heldItem;
 

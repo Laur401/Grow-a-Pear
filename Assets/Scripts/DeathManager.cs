@@ -70,6 +70,7 @@ public class DeathManager : MonoBehaviour
     {
         playerObject.SetActive(true);
         playerObject.transform.position = respawnPoints.Last();
+        playerObject.GetComponent<PlayerMovement1>().canJump = true;
         canRespawn = false;
         yield return new WaitForSeconds(0.5f);
         canRespawn = true;
