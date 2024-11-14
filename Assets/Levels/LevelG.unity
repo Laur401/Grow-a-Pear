@@ -4098,7 +4098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 595970e1ba493bd54b2adec9a501f2ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followDistance: 0.4
+  followDistance: 0.35
   pickedUp: 0
 --- !u!4 &1277575844
 Transform:
