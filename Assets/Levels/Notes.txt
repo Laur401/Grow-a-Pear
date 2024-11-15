@@ -1,0 +1,10 @@
+Need to fix:
+
+Jumping not working sometimes for some reason (possibly logic mistake) Possibly fixed
+LevelD camera;
+
+Need to create:
+
+Death for the characters
+GUI
+Menus

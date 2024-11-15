@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Camera2
+  - Ground
+  - Spike
+  - Camera1
+  - Box
+  - Locked
+  - Deadly
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
@@ -11,6 +19,10 @@ TagManager:
   - 
   - Water
   - UI
+  - Environment
+  - Ground
+  - Player
+  - Object
   - 
   - 
   - 
@@ -31,13 +43,18 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Camera1
+  - Camera2
   m_SortingLayers:
+  - name: Background
+    uniqueID: 32571389
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: PlayersOverText
+    uniqueID: 2705178739
+    locked: 0
+  - name: Cover
+    uniqueID: 3445420497
     locked: 0

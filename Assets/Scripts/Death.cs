@@ -1,14 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Death : MonoBehaviour
 {
-    private void OnCollisionEnter2D(Collision2D collision)
+    private DeathManager deathManager;
+    private void Start()
     {
-        if (collision.gameObject.CompareTag("Spike"))
+        deathManager = GetComponentInParent<DeathManager>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Deadly")&&!deathManager.alreadyRunning)
         {
-            Destroy(gameObject);
+            StartCoroutine(deathManager.KillPlayer());
         }
     }
 }

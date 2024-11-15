@@ -1,32 +1,97 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Pickup : MonoBehaviour
 {
-    GameObject playerObj;
+    Rigidbody2D rb;
+    [SerializeField] private float followDistance = 1.0f;
+    GameObject player;
+    public bool pickedUp = false;
+    bool grabHappened = false;
+    bool cont = false;
+
+    private Vector3 defaultScale;
     // Start is called before the first frame update
     void Start()
     {
-        playerObj=GameObject.FindWithTag("Player");
+        rb=GetComponent<Rigidbody2D>();
+        defaultScale=transform.localScale;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Q))
-            PickObjUp();
-        if (Input.GetKey(KeyCode.E))
-            UnPickObjUp();
+        if (pickedUp)
+        {
+            transform.position=player.transform.position + (followDistance * player.transform.localScale.x + transform.localScale.x) * player.transform.right;
+            transform.rotation=player.transform.rotation;
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x) * Mathf.Sign(player.transform.localScale.x);
+            transform.localScale = scale;
+        }
     }
-    void PickObjUp()
+
+    public int PickUpHandler(InputAction grabInput, GameObject playerObject)
     {
-        transform.SetParent(playerObj.transform);
-        transform.localPosition=new Vector2(1.5f,-1.0f);
+        if (grabInput.triggered)
+        {
+            if (!pickedUp)
+            {
+                StartCoroutine(PickObjUp(playerObject));
+                grabHappened = true;
+                return 1; //1 for picked up, 2 for unpicked, 0 for no change
+                //Debug.Log("grab");
+            }
+            else
+            {
+                //UnPickObjUp();
+                cont = true;
+                grabHappened = true;
+                return 2;
+                //Debug.Log("ungrab");
+            }
+        }
+        return 0;
+    }
+
+    public IEnumerator ObjectRemover()
+    {
+        cont = true;
+        yield return new WaitUntil(()=>pickedUp=false);
+        Destroy(gameObject);
+    }
+    
+    IEnumerator PickObjUp(GameObject playerObject)
+    {
+        pickedUp = true;
+        player = playerObject;
+        rb.isKinematic = true;
+        
+        yield return new WaitUntil(() => cont);
+        cont = false;
+        
+        pickedUp = false;
+        player = null;
+        rb.isKinematic = false;
+        transform.localScale = defaultScale;
+    }
+
+   /* void PickObjUp(GameObject playerObject)
+    {
+        pickedUp = true;
+        player = playerObject;
+        rb.isKinematic = true;
+        //TODO: Disable collision if picked up
     }
     void UnPickObjUp()
     {
-        transform.parent=null;
-    }
+        pickedUp = false;
+        player = null;
+        rb.isKinematic = false;
+        transform.localScale = defaultScale;
+    }*/
+   
 }
 
